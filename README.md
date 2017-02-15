@@ -8,6 +8,7 @@ They fill out the information for that event.
 * Title
 * Units
 * etc...
+
 Once they have created the new event, they can add PR's to it.
 
 ### User wants to add a new PR to an event.
@@ -18,6 +19,7 @@ User fills in info
 * Rounds Completed
 * Date Completed
 * etc...
+
 User clicks submit to save the PR.
 
 # Requirements
