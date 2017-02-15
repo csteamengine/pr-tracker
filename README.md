@@ -27,3 +27,14 @@ User clicks submit to save the PR.
 ### This website shall keep track of previous PR's for all the different events that a user does.
 ### This website shall keep track of a users progress and improvements for each event that the user does.
 
+# Events Brainstorm
+* Marathon
+* Triathlon
+* Biking
+* Running
+* Swimming
+* Bench Press
+* Squat
+* PowerSets
+
+# The hardest part of this project will definitely be the database structure. It will be difficult to design the database to accomodate all the different kinds of events. 
