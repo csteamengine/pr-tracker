@@ -36,7 +36,7 @@ $json = json_decode($json);
 //exit;
 //TODO change this for when the server is live.
 $dbhost = $json->{'host'};
-$dbname = $json->{'database'}; // the name of the database that you are going to use for this project
+$dbname = 'pr_tracker'; // the name of the database that you are going to use for this project
 
 $dbuser = $json->{'username'}; // the username that you created, or were given, to access your database
 $dbpass = $json->{'password'}; // the password that you created, or were given, to access your database
