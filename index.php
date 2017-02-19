@@ -7,6 +7,10 @@
  */
 
 include "includes/php/base.php";
+
+if((isset($_SESSION['logged_in']) && !$_SESSION['logged_in'])){
+    header("location /pages/login.php");
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,6 +22,6 @@ include "includes/php/base.php";
     </script>
 </head>
 <body>
-Go to <a href="pages/index.php">/pages/index.html</a>
+Go to <a href="old_pages/index.php">/pages/index.html</a>
 </body>
 </html>
