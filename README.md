@@ -22,6 +22,12 @@ User fills in info
 
 User clicks submit to save the PR.
 
+### User wants to add a new event
+User clicks 'Create New Event'
+User enters a name for the event
+User fills in some information about the event. 
+  * Category
+  * etc...
 # Requirements
 ### This website shall keep track of all users PR's for all the different events that a user does.
 ### This website shall keep track of previous PR's for all the different events that a user does.
