@@ -1,6 +1,11 @@
 # Personal Record Tracker
 The goal of this project is to keep track of your personal records for whatever you want to do. It will have the ability to keep track of athletic PR's, intellectual PR's, and so on. There will be a database of events that it uses, as well as the ability to add a new event. 
 
+# Events
+For a list of all possible events, we can use this api 
+http://api.amp.active.com/v2/search/?current_page=1&per_page=10&sort=distance&exclude_children=true&api_key=rnsfbdbr2c8xyctuwb92dsas
+It will return a huge list of all the athletic activities a person could think of.
+
 # Use Cases
 ### User wants to add a new record for typing words in a minute. 
 They click 'Add new Event' 
