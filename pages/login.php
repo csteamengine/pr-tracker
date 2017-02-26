@@ -47,7 +47,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Login | Room For ImPRovement</title>
+
+    <link rel="icon" href="/includes/icons/favicon.png" type="image/x-icon">
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
