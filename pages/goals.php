@@ -60,7 +60,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     include "navigation.php";
 
     $eventSQL = "SELECT * FROM userGoals 
-     WHERE userev.userID = 
+     WHERE userID = 
      ".$_SESSION['user_id'];
 
     $eventQuery = mysqli_query($conn, $eventSQL);

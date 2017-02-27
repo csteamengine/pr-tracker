@@ -76,7 +76,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                      INNER JOIN events eve
                      ON userev.eventID = eve.eventID
                      INNER JOIN category cat 
-                     ON ev.categoryID = cat.categoryID
+                     ON eve.categoryID = cat.categoryID
                      WHERE userev.userID = 
                      ".$_SESSION['user_id'];
 
