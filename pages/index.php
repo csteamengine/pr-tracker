@@ -36,6 +36,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="/includes/bootcomplete.js-master/dist/bootcomplete.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
@@ -49,6 +50,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="/includes/bootcomplete.js-master/dist/jquery.bootcomplete.js"></script>
+
 
 </head>
 
@@ -69,7 +72,9 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Recent Activities
+                        <h5 class="pull-left">Recent Entries</h5>
+                        <a href="addInfo.php?action=addEntry"><button class="btn btn-outline btn-primary  pull-right"><i class="fa fa-plus"></i></button></a>
+                        <div class="clearfix"></div>
                     </div>
                     <?php
                     $eventSQL = "SELECT * FROM userEvents userev 
@@ -77,6 +82,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                      ON userev.eventID = eve.eventID
                      INNER JOIN category cat 
                      ON eve.categoryID = cat.categoryID
+                     INNER JOIN units unit
+                     ON userev.unitID = unit.unitID
                      WHERE userev.userID = 
                      ".$_SESSION['user_id'];
 
@@ -93,10 +100,10 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Username</th>
+                                        <th>Activity</th>
+                                        <th>Time</th>
+                                        <th>Quantity</th>
+                                        <th>Date</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -104,10 +111,10 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                     while($result = mysqli_fetch_assoc($eventQuery)) {
                                         ?>
                                         <tr>
-                                            <td>1</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
+                                            <td><?= $result['eventTitle'] ?></td>
+                                            <td><?= $result['time'] ?></td>
+                                            <td><?= $result['quantity'] ?> <?= $result['unitTitle'] ?></td>
+                                            <td><?= explode(" ",$result['dateOfEvent'])[0] ?></td>
                                         </tr>
                                         <?php
                                     }
@@ -124,7 +131,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <a href="addInfo.php?action=addActivity" style="text-decoration: none;">
+                                <a href="addInfo.php?action=addEntry" style="text-decoration: none;">
                                     <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Create an Entry</button>
                                 </a>
                                 <!-- /.table-responsive -->
@@ -141,7 +148,9 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Your Goals
+                        <h5 class="pull-left">Your Goals</h5>
+                        <a href="addInfo.php?action=addGoal"><button class="btn btn-outline btn-primary pull-right"><i class="fa fa-plus"></i></button></a>
+                        <div class="clearfix"></div>
                     </div>
                     <?php
                     $eventSQL = "SELECT * FROM userGoals 

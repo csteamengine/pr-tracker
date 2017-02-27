@@ -134,7 +134,9 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Add new record</button>
+                            <a href="addInfo.php?action=addEntry" style="text-decoration: none;">
+                                <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Create an Entry</button>
+                            </a>
                             <!-- /.table-responsive -->
                         </div>
                         <!-- /.panel-body -->

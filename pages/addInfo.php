@@ -15,17 +15,24 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 
 $action = get_value('action');
 
-if($action == 'getCategories'){
-    $sql = "SELECT categoryTitle FROM category WHERE categoryTitle LIKE '%".get_value('value')."%'";
-    $query = mysqli_query($conn, $sql);
+switch($action){
+    case 'getCategories':
+        $sql = "SELECT categoryTitle FROM category WHERE categoryTitle LIKE '%".get_value('value')."%'";
+        $query = mysqli_query($conn, $sql);
 
-    $json = array();
+        $json = array();
 
-    while($result = mysqli_fetch_assoc($query)){
-        array_push($json, $result['categoryTitle']);
-    }
-    echo json_encode($json);
-    exit;
+        while($result = mysqli_fetch_assoc($query)){
+            array_push($json, $result['categoryTitle']);
+        }
+        echo json_encode($json);
+        exit;
+        break;
+
+    case 'addEntry':
+        //TODO get all the info from the form, and enter it into the database.
+        break;
+
 }
 
 ?>
@@ -52,10 +59,10 @@ if($action == 'getCategories'){
 
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="/includes/bootcomplete.js-master/dist/bootcomplete.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
-
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -175,6 +182,111 @@ if($action == 'getCategories'){
                     </div>
                     <?php
                     break;
+                case "addEntry":
+                    ?>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1 class="page-header">Add Entry</h1>
+                        </div>
+                    </div>
+                    <form action="addInfo.php?action=submit" method="post" id="editForm">
+                        <div class="row">
+                            <div class="col-lg-4 col-lg-offset-3">
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <?php
+                                    $categorySQL = "SELECT categoryTitle, categoryID FROM category";
+                                    $categoryQuery = mysqli_query($conn, $categorySQL);
+                                    ?>
+
+                                    <select id="categorySelect" class="form-control" required>
+                                        <option value="" >Select A Category...</option>
+                                        <?php
+                                        while($result = mysqli_fetch_assoc($categoryQuery)){
+                                            ?>
+                                            <option value="<?= $result['categoryID'] ?>" ><?= $result['categoryTitle'] ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-lg-offset-3">
+                                <div class="form-group" id="groupActivity" hidden>
+                                    <label>Activity</label>
+                                    <select class="form-control" id="activity" name="activity"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group" id="groupUnits" hidden>
+                                <div class="col-lg-2 col-lg-offset-3">
+                                    <label>Quantity</label>
+                                    <input type="number" step="any" class="form-control" id="quantity" placeholder="Quantity">
+                                </div>
+                                <div class="col-lg-2">
+                                    <label>Units</label>
+                                    <select class="form-control" id="units" name="units">
+                                        <option value=""></option>
+                                        <?php
+                                        $unitSQL = "SELECT * FROM units";
+                                        $unitQuery = mysqli_query($conn, $unitSQL);
+                                        while($result = mysqli_fetch_assoc($unitQuery)){
+                                            ?>
+                                            <option value="<?= $result['unitID'] ?>"><?= $result['unitTitle'] ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="timeRow" hidden>
+                            <div class="form-group">
+                                <div class="col-lg-1 col-lg-offset-3">
+                                    <label for="sets">Sets</label>
+                                    <input type="number" name="sets" min="1" class="form-control" id="sets" value="1">
+                                </div>
+                                <div class="col-lg-1">
+                                    <label for="hours">Hours</label>
+                                    <input type="number" min="0" name="hours" class="form-control" id="hours" value="0">
+                                </div>
+                                <div class="col-lg-1">
+                                    <label for="minutes">Minutes</label>
+                                    <input type="number" min="0" name="minutes" class="form-control" id="minutes" value="0">
+                                </div>
+                                <div class="col-lg-1">
+                                    <label for="seconds">Seconds</label>
+                                    <input type="number" step="any" name="seconds" min="0" class="form-control" id="seconds" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group" id="groupTime" hidden>
+                                <div class="col-lg-2 col-lg-offset-3">
+                                    <label>Date</label>
+                                    <input class="form-control" type="date" id="date" placeholder="mm/dd/yyyy">
+                                </div>
+                                <div class="col-lg-2">
+                                    <label>Time</label>
+                                    <input class="form-control" type="time" id="time" placeholder="--:-- --">
+                                </div>
+                            </div>
+                        </div>
+                            <br>
+                        <div class="row">
+                            <div class="form-group" id="submitGroup" hidden>
+                                <div class="col-lg-2 col-lg-offset-4">
+                                    <input type="submit"  value="Create Entry" class="btn btn-primary btn-outline form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <?php
+                    break;
                 case "addRecord":
                     ?>
                     <div class="row">
@@ -252,9 +364,14 @@ if($action == 'getCategories'){
 <!-- /#wrapper -->
 
 <!-- jQuery -->
-<script src="../vendor/jquery/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-2.1.3.js"></script>
+
+
 <script src = "https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 <link href="http://jquery-ui-bootstrap.github.io/jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.10.3.custom.css" rel="stylesheet"/>
+<script src="/includes/bootcomplete.js-master/dist/jquery.bootcomplete.js"></script>
+
+
 
 
 <!-- Bootstrap Core JavaScript -->
@@ -277,6 +394,38 @@ if($action == 'getCategories'){
 
     });
 </script>
+
+<script type="text/javascript">
+
+    $('#categorySelect').change(function(){
+        if($('#categorySelect').val() != ""){
+            $('#groupActivity').show();
+        }else{
+            $('#groupActivity').hide();
+        }
+        $.getJSON('/pages/ajax.php?action=getEvents&category='+$('#categorySelect').val(), function(result){
+            $('#activity').empty();
+            $('#activity').append($('<option>').text("").attr('value', " "));
+            $.each(result, function(i, value) {
+                $('#activity').append($('<option>').text(value['label']).attr('value', value['id']));
+            });
+        });
+    });
+    $('#activity').change(function(){
+        if($('#activity').val() == ""){
+            $('#groupUnits').hide();
+            $('#timeRow').hide();
+            $('#groupTime').hide();
+            $('#submitGroup').hide();
+        }else{
+            $('#groupTime').show();
+            $('#timeRow').show();
+            $('#groupUnits').show();
+            $('#submitGroup').show();
+        }
+    })
+</script>
+
 
 </body>
 
