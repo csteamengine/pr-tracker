@@ -120,12 +120,12 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                         }else{
                             ?>
                             <div class="panel-heading text-center">
-                                You haven't added any activities yet
+                                You haven't participated in any activities yet
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
                                 <a href="addInfo.php?action=addActivity" style="text-decoration: none;">
-                                    <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Add an Activity</button>
+                                    <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Create an Entry</button>
                                 </a>
                                 <!-- /.table-responsive -->
                             </div>
