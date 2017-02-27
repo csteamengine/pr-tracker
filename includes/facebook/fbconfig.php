@@ -68,6 +68,7 @@ if ( isset( $session ) ) {
     $_SESSION['FULLNAME'] = null;
     $_SESSION['EMAIL'] = null;
     $_SESSION['username'] = null;
+    $_SESSION['user_id'] = null;
  header("Location: ".$loginUrl);
 }
 ?>

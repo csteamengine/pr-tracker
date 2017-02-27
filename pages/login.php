@@ -19,6 +19,7 @@
                         if($_SESSION['FULLNAME'] == " "){
                             $_SESSION['FULLNAME'] = $result['username'];
                         }
+                        $_SESSION['user_id'] = $result['userID'];
                         header("location: index.php");
                     }else{
                         $error = "failed_login";
@@ -35,6 +36,7 @@
                             if($_SESSION['FULLNAME'] == " "){
                                 $_SESSION['FULLNAME'] = $result['username'];
                             }
+                            $_SESSION['user_id'] = $result['userID'];
                             header("location: index.php");
                         }else{
                             $error = "failed_login";
