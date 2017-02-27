@@ -12,12 +12,13 @@ session_start();
 
 $parent = basename(dirname($_SERVER['PHP_SELF']));
 if($parent == "" || $parent == "Stonestreet"){
-    $file = "../stonestreet_config.txt";
-}else{
-    $file = "../../stonestreet_config.txt";
+    $file = "../pr-tracker.txt";
+}else if($parent == "php" || $parent == "facebook"){
+    $file = "../../../pr-tracker.txt";
+}else {
+    $file = "../../pr-tracker.txt";
 }
-//echo $parent;
-//exit;
+
 
 $json = "";
 if (file_exists($file))
@@ -30,21 +31,21 @@ if (file_exists($file))
     // of check on filetype
 
     $json = $contents;
+    $json = json_decode($json);
+
+    $dbhost = $json->{'host'};
+    $dbname = 'pr_tracker'; // the name of the database that you are going to use for this project
+
+    $dbuser = $json->{'username'}; // the username that you created, or were given, to access your database
+    $dbpass = $json->{'password'}; // the password that you created, or were given, to access your database
+    $port = $json->{'port'};
+
+    $conn = mysqli_connect($dbhost,$dbuser,$dbpass,$dbname,$port);
+    if (mysqli_connect_errno())
+    {
+        echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    }
+}else{
+    echo "No such file ".$file;
 }
-$json = json_decode($json);
-//echo "Username= ". $json->{'username'};
-//exit;
-//TODO change this for when the server is live.
-$dbhost = $json->{'host'};
-$dbname = 'pr_tracker'; // the name of the database that you are going to use for this project
 
-$dbuser = $json->{'username'}; // the username that you created, or were given, to access your database
-$dbpass = $json->{'password'}; // the password that you created, or were given, to access your database
-$port = $json->{'port'};
-
-$conn = mysqli_connect($dbhost,$dbuser,$dbpass,$dbname,$port);
-
-if (mysqli_connect_errno())
-{
-    echo "Failed to connect to MySQL: " . mysqli_connect_error();
-}

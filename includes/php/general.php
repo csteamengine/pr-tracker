@@ -5,6 +5,7 @@
  * Date: 6/30/16
  * Time: 7:56 PM
  */
+include "base.php";
 
 /**
  * @param $name -- Name of variable you want to get.
@@ -107,6 +108,7 @@ function get_value($name, $target_array = null, $alternate_target_array = null, 
         }
     }
 }// end function get_value(..)
+
 
 function first_login($username,$conn){
     $query = "SELECT last_login FROM sql5124638.users WHERE username = '".$username."'";

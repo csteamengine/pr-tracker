@@ -18,6 +18,8 @@
     </div>
     <!-- /.navbar-header -->
     <ul class="nav navbar-top-links navbar-right">
+        <p class="navbar-text"><?= $_SESSION['FULLNAME'] ?></p>
+
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -45,10 +47,10 @@
                     <a href="index.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="events.php"><i class="fa fa-bar-chart-o fa-fw"></i> Your Events</a>
+                    <a href="records.php"><i class="fa fa-clock-o fa-fw"></i>Personal Records</a>
                 </li>
                 <li>
-                    <a href="records.php"><i class="fa fa-clock-o fa-fw"></i>Personal Records</a>
+                    <a href="activities.php"><i class="fa fa-bar-chart-o fa-fw"></i> Your Activities</a>
                 </li>
                 <li>
                     <a href="goals.php"><i class="fa fa-crosshairs fa-fw"></i>Personal Goals</a>

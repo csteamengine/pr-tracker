@@ -69,42 +69,70 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Recent Events
+                        Recent Activities
                     </div>
+                    <?php
+                    $eventSQL = "SELECT * FROM userEvents userev 
+                     INNER JOIN events eve
+                     ON userev.eventID = eve.eventID
+                     INNER JOIN category cat 
+                     ON ev.categoryID = cat.categoryID
+                     WHERE userev.userID = 
+                     ".$_SESSION['user_id'];
+
+                    $eventQuery = mysqli_query($conn, $eventSQL);
+
+                    ?>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Username</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <?php
+                        if(mysqli_num_rows($eventQuery) > 0){
+
+                            ?>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Username</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    while($result = mysqli_fetch_assoc($eventQuery)) {
+                                        ?>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php
+                        }else{
+                            ?>
+                            <div class="panel-heading text-center">
+                                You haven't added any activities yet
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <a href="addInfo.php?action=addActivity" style="text-decoration: none;">
+                                    <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Add an Activity</button>
+                                </a>
+                                <!-- /.table-responsive -->
+                            </div>
+                            <!-- /.panel-body -->
+                        <?php
+                        }
+                        ?>
                         <!-- /.table-responsive -->
                     </div>
                     <!-- /.panel-body -->
@@ -113,145 +141,181 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Recent PR's
+                        Your Goals
                     </div>
+                    <?php
+                    $eventSQL = "SELECT * FROM userGoals 
+                     WHERE userID=".$_SESSION['user_id'];
+
+                    $eventQuery = mysqli_query($conn, $eventSQL);
+
+                    ?>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Username</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.table-responsive -->
-                    </div>
-                    <!-- /.panel-body -->
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    Actions
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><a href="#">Action</a>
-                                    </li>
-                                    <li><a href="#">Another action</a>
-                                    </li>
-                                    <li><a href="#">Something else here</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a>
-                                    </li>
-                                </ul>
+                        <?php
+                        if(mysqli_num_rows($eventQuery) > 0){
+
+                            ?>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Username</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    while($result = mysqli_fetch_assoc($eventQuery)) {
+                                        ?>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+
+                                    </tbody>
+                                </table>
                             </div>
-                        </div>
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <div id="morris-area-chart"></div>
-                    </div>
-                    <!-- /.panel-body -->
+                            <?php
+                        }else{
+                            ?>
+                            <div class="panel-heading text-center">
+                                You haven't added any personal goals yet.
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <a href="addInfo.php?action=addGoal" style="text-decoration: none">
+                                    <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Add a Goal</button>
+                                </a>
+                                <!-- /.table-responsive -->
+                            </div>
+                            <!-- /.panel-body -->
+                            <?php
+                        }
+                        ?>
                 </div>
-
             </div>
-            <!-- /.col-lg-8 -->
-            <div class="col-lg-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-bell fa-fw"></i> Notifications Panel
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <div class="list-group">
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-comment fa-fw"></i> New Comment
-                                <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                                    </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                <span class="pull-right text-muted small"><em>12 minutes ago</em>
-                                    </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                <span class="pull-right text-muted small"><em>27 minutes ago</em>
-                                    </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-tasks fa-fw"></i> New Task
-                                <span class="pull-right text-muted small"><em>43 minutes ago</em>
-                                    </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                <span class="pull-right text-muted small"><em>11:32 AM</em>
-                                    </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-bolt fa-fw"></i> Server Crashed!
-                                <span class="pull-right text-muted small"><em>11:13 AM</em>
-                                    </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-warning fa-fw"></i> Server Not Responding
-                                <span class="pull-right text-muted small"><em>10:57 AM</em>
-                                    </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed
-                                <span class="pull-right text-muted small"><em>9:49 AM</em>
-                                    </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-money fa-fw"></i> Payment Received
-                                <span class="pull-right text-muted small"><em>Yesterday</em>
-                                    </span>
-                            </a>
-                        </div>
-                        <!-- /.list-group -->
-                        <a href="#" class="btn btn-default btn-block">View All Alerts</a>
-                    </div>
-                    <!-- /.panel-body -->
-                </div>
-
         </div>
-        <!-- /.row -->
-    </div>
+            <?php
+            if(mysqli_num_rows($eventQuery) > 0){
+                ?>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
+                                <div class="pull-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            Actions
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right" role="menu">
+                                            <li><a href="#">Action</a>
+                                            </li>
+                                            <li><a href="#">Another action</a>
+                                            </li>
+                                            <li><a href="#">Something else here</a>
+                                            </li>
+                                            <li class="divider"></li>
+                                            <li><a href="#">Separated link</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div id="morris-area-chart"></div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+
+                    </div>
+                    <!-- /.col-lg-8 -->
+                    <div class="col-lg-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <i class="fa fa-bell fa-fw"></i> Notifications Panel
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-comment fa-fw"></i> New Comment
+                                        <span class="pull-right text-muted small"><em>4 minutes ago</em>
+                                    </span>
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                        <span class="pull-right text-muted small"><em>12 minutes ago</em>
+                                    </span>
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-envelope fa-fw"></i> Message Sent
+                                        <span class="pull-right text-muted small"><em>27 minutes ago</em>
+                                    </span>
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-tasks fa-fw"></i> New Task
+                                        <span class="pull-right text-muted small"><em>43 minutes ago</em>
+                                    </span>
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                        <span class="pull-right text-muted small"><em>11:32 AM</em>
+                                    </span>
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-bolt fa-fw"></i> Server Crashed!
+                                        <span class="pull-right text-muted small"><em>11:13 AM</em>
+                                    </span>
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-warning fa-fw"></i> Server Not Responding
+                                        <span class="pull-right text-muted small"><em>10:57 AM</em>
+                                    </span>
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed
+                                        <span class="pull-right text-muted small"><em>9:49 AM</em>
+                                    </span>
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-money fa-fw"></i> Payment Received
+                                        <span class="pull-right text-muted small"><em>Yesterday</em>
+                                    </span>
+                                    </a>
+                                </div>
+                                <!-- /.list-group -->
+                                <a href="#" class="btn btn-default btn-block">View All Alerts</a>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+
+                    </div>
+                    <!-- /.row -->
+                </div>
+            <?php
+            }else {
+                ?>
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center">
+                        More content soon to come!
+                    </div>
+                </div>
+            </div>
+                <?php
+            }
+            ?>
     <!-- /#page-wrapper -->
 
 </div>

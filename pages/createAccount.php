@@ -11,38 +11,13 @@
 
 include "../includes/php/base.php";
 include "../includes/php/general.php";
-$action = get_value('action');
-if(isset($action)){
-    switch ($action){
-        case "login":
-            $loginSql = "SELECT * FROM users WHERE email='".get_value('email')."'";
-            $loginQuery = mysqli_query($conn, $loginSql);
 
-            if(mysqli_num_rows($loginQuery) > 0){
-                $result = mysqli_fetch_assoc($loginQuery);
-                if(password_verify(get_value('password'),$result['password'])){
-                    $_SESSION['logged_in'] = true;
-                    header("location: index.php");
-                }else{
-                    $error = "failed_login";
-                }
-            }else{
-                $error = "failed_login";
-            }
-            break;
-        case "create_account":
+$error = get_value('error');
 
-            break;
-        case "logout":
-            $_SESSION['logged_in'] = false;
-
-            break;
-        default:
-
-            break;
-
-    }
+if($_SESSION['logged_in']){
+    header("location: /pages/index.php");
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +30,7 @@ if(isset($action)){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Create Account | Room For ImPRovement</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -88,11 +63,11 @@ if(isset($action)){
                     <h3 class="panel-title">Please Sign In</h3>
                 </div>
                 <div class="panel-body">
-                    <form role="form" action="/pages/createAccount.php?action=createAccount" method="post">
+                    <form role="form" action="/pages/login.php?action=createAccount" method="post" id="createForm">
                         <?php
-                        if(isset($error) && $error == "failed_login"){
+                        if(isset($error) && $error == "username_taken"){
                             ?>
-                            <h4 class="text-warning">Email or Password was incorrect.</h4>
+                            <h4 id="warning" class="text-warning">Username is already taken</h4>
                             <?php
                         }
                         ?>
@@ -104,10 +79,16 @@ if(isset($action)){
                                 <input class="form-control" placeholder="E-mail" name="email" type="email">
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                <input class="form-control" placeholder="First Name" name="fName" type="text">
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Password Confirm" name="password_verify" type="password" value="">
+                                <input class="form-control" placeholder="Last Name" name="lName" type="text">
+                            </div>
+                            <div class="form-group">
+                                <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" required>
+                            </div>
+                            <div class="form-group">
+                                <input id="passwordConfirm" class="form-control" placeholder="Password Confirm" name="password_verify" type="password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" value="" required>
                             </div>
                             <div class="checkbox">
                                 <label>
@@ -115,7 +96,7 @@ if(isset($action)){
                                 </label>
                             </div>
                             <!-- Change this to a button or input when using this as a form -->
-                            <input type="submit" class="btn btn-lg btn-success btn-block" value="Login">
+                            <input type="submit" class="btn btn-lg btn-success btn-block" value="Create Account">
                         </fieldset>
                         <h5 class="center-block">Already have an account? <a href="/pages/login.php" >Login.</a></h5 class="center-block">
                     </form>
@@ -124,6 +105,7 @@ if(isset($action)){
         </div>
     </div>
 </div>
+
 
 <!-- jQuery -->
 <script src="../vendor/jquery/jquery.min.js"></script>
@@ -136,6 +118,15 @@ if(isset($action)){
 
 <!-- Custom Theme JavaScript -->
 <script src="../dist/js/sb-admin-2.js"></script>
+
+<script>
+    $('#createForm').submit(function(event){
+        if($('#password').val() != $('#passwordConfirm').val()){
+            $('#warning').text("The passwords must match");
+            event.preventDefault();
+        }
+    })
+</script>
 
 </body>
 

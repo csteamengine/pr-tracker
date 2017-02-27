@@ -14,20 +14,57 @@
                     $result = mysqli_fetch_assoc($loginQuery);
                     if(password_verify(get_value('password'),$result['password'])){
                         $_SESSION['logged_in'] = true;
+                        $_SESSION['username'] = $result['username'];
+                        $_SESSION['FULLNAME'] = $result['firstName']." ".$result['lastName'];
+                        if($_SESSION['FULLNAME'] == " "){
+                            $_SESSION['FULLNAME'] = $result['username'];
+                        }
                         header("location: index.php");
                     }else{
                         $error = "failed_login";
                     }
                 }else{
-                    $error = "failed_login";
+                    $loginSql = "SELECT * FROM users WHERE username='".get_value('email')."'";
+                    $loginQuery = mysqli_query($conn, $loginSql);
+                    if(mysqli_num_rows($loginQuery) > 0){
+                        $result = mysqli_fetch_assoc($loginQuery);
+                        if(password_verify(get_value('password'),$result['password'])){
+                            $_SESSION['logged_in'] = true;
+                            $_SESSION['username'] = $result['username'];
+                            $_SESSION['FULLNAME'] = $result['firstName']." ".$result['lastName'];
+                            if($_SESSION['FULLNAME'] == " "){
+                                $_SESSION['FULLNAME'] = $result['username'];
+                            }
+                            header("location: index.php");
+                        }else{
+                            $error = "failed_login";
+                        }
+                    }
                 }
                 break;
-            case "create_account":
+            case "createAccount":
+                $loginSql = "SELECT * FROM users WHERE username='".get_value('username')."'";
+                $loginQuery = mysqli_query($conn, $loginSql);
 
+                if(mysqli_num_rows($loginQuery) > 0){
+                    $error = "failed_login";
+                    header("location: createAccount.php?error=username_taken");
+                }else if(mysqli_num_rows($loginQuery) == 0){
+                    $sql = "INSERT INTO users (username, email, firstName, lastName, password) VALUE ('".get_value('username')."', '".get_value('email')."','".get_value('fName')."','".get_value('lName')."','".password_hash(get_value('password'), PASSWORD_BCRYPT)."')";
+                    $query = mysqli_query($conn, $sql);
+                    $_SESSION['logged_in'] = true;
+                    $_SESSION['FULLNAME'] = get_value('username');
+                    $_SESSION['user_id'] = mysqli_insert_id($conn);
+                    header("location: index.php");
+                }
                 break;
             case "logout":
                 $_SESSION['logged_in'] = false;
-
+                $_SESSION['FBID'] = null;
+                $_SESSION['FULLNAME'] = null;
+                $_SESSION['EMAIL'] = null;
+                $_SESSION['user_id'] = null;
+                $_SESSION['username'] = null;
                 break;
             default:
 
@@ -46,7 +83,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta name="google-signin-client_id" content="912882948798-mckg0lgj9laoq367unqi1s85do6t8bs1.apps.googleusercontent.com">
     <title>Login | Room For ImPRovement</title>
 
     <link rel="icon" href="/includes/icons/favicon.png" type="image/x-icon">
@@ -56,6 +93,9 @@
 
     <!-- MetisMenu CSS -->
     <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Social Buttons CSS -->
+    <link href="../vendor/bootstrap-social/bootstrap-social.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
@@ -69,7 +109,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 
 </head>
@@ -105,6 +145,13 @@
                         <h3 class="panel-title">Please Sign In</h3>
                     </div>
                     <div class="panel-body">
+                        <a href="/includes/facebook/fbconfig.php" class="btn btn-block btn-social btn-facebook">
+                            <i class="fa fa-facebook"></i> Sign in with Facebook
+                        </a>
+<!--                        <a class="btn btn-block btn-social btn-google-plus">-->
+<!--                            <i class="fa fa-google-plus g-signin2"></i> Sign in with Google-->
+<!--                        </a>-->
+                        <hr>
                         <form role="form" action="/pages/login.php?action=login" method="post">
                             <?php
                             if(isset($error) && $error == "failed_login"){
@@ -115,7 +162,7 @@
                             ?>
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    <input class="form-control" placeholder="E-mail or Username" name="email" type="text" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="password" type="password" value="">

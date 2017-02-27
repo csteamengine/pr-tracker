@@ -3,15 +3,15 @@
  * Created by PhpStorm.
  * User: gregory
  * Date: 2/26/17
- * Time: 9:56 AM
+ * Time: 9:32 AM
  */
-
 
 include "../includes/php/base.php";
 
 if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     header("location: login.php");
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -25,7 +25,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Friends | Room For ImPRovement</title>
+    <title>Your Events | Room For ImPRovement</title>
 
     <link rel="icon" href="/includes/icons/favicon.png" type="image/x-icon">
 
@@ -74,7 +74,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Friends</h1>
+                <h1 class="page-header">Your Activities</h1>
             </div>
             <?php
             if(mysqli_num_rows($eventQuery) > 0){
@@ -124,17 +124,28 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                     </div>
                     <!-- /.panel -->
                 </div>
-                <?php
+            <?php
             }else{
                 ?>
                 <div class="col-lg-4 col-lg-offset-4">
                     <div class="panel panel-default">
                         <div class="panel-heading text-center">
-                            You haven't connected with any friends yet
+                            You haven't added any activities yet
                         </div>
+
+
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Find friends now.</button>
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search For Activities...">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <hr>
+                            <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Create an Activity</button>
                             <!-- /.table-responsive -->
                         </div>
                         <!-- /.panel-body -->
@@ -166,9 +177,22 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 <script src="../vendor/morrisjs/morris.min.js"></script>
 <script src="../data/morris-data.js"></script>
 
+<script src="//netsh.pp.ua/upwork-demo/1/js/typeahead.js"></script>
+
 <!-- Custom Theme JavaScript -->
 <script src="../dist/js/sb-admin-2.js"></script>
 
+<script>
+    $(document).ready(function() {
+
+        $('input.city').typeahead({
+            name: 'city',
+            remote: 'city.php?query=%QUERY'
+
+        });
+
+    })
+</script>
 </body>
 
 </html>
