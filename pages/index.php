@@ -181,7 +181,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                       ON us.unitID = un.unitID
                       INNER JOIN events ev 
                       ON us.eventID = ev.eventID
-                     WHERE us.userID=".$_SESSION['user_id']."  AND us.isActive =1 ORDER BY us.dateCreated DESC";
+                     WHERE us.userID=".$_SESSION['user_id']."  AND us.isActive =1 ORDER BY us.goalDeadline ASC";
 
                     $goalQuery = mysqli_query($conn, $goalSQL);
 

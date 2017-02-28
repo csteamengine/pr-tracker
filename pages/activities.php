@@ -35,8 +35,6 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <!-- MetisMenu CSS -->
     <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
 
-    <link href="/includes/bootcomplete.js-master/dist/bootcomplete.css" rel="stylesheet">
-
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
 
@@ -51,8 +49,32 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
+    <![endif]-->
+    <style type="text/css">
+
+        .tt-menu {
+            background-color: #FFFFFF;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 12px;
+            padding: 8px 0;
+            width: 422px;
+        }
+        .tt-suggestion {
+            font-size: 22px;  /* Set suggestion dropdown font size */
+            padding: 3px 20px;
+        }
+        .tt-suggestion:hover {
+            cursor: pointer;
+            background-color: #0097CF;
+            color: #FFFFFF;
+        }
+        .tt-suggestion p {
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -62,15 +84,13 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     include "navigation.php";
 
     $eventSQL = "SELECT * FROM userEvents userev 
-     INNER JOIN events eve
-     ON userev.eventID = eve.eventID
-     INNER JOIN category cat 
-     ON eve.categoryID = cat.categoryID
-     WHERE userev.userID = 
-     ".$_SESSION['user_id'];
-
+                         INNER JOIN events eve
+                         ON userev.eventID = eve.eventID
+                         INNER JOIN category cat 
+                         ON eve.categoryID = cat.categoryID
+                         WHERE userev.userID = 
+                         ".$_SESSION['user_id']." ORDER BY userev.dateCreated DESC";
     $eventQuery = mysqli_query($conn, $eventSQL);
-
 
     ?>
     <div id="page-wrapper">
@@ -82,7 +102,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                             Your Activities
                         </div>
                         <div class="col-lg-5 col-lg-offset-1 col-md-offset-1 col-md-5 col-xs-6" >
-                            <div class="input-group custom-search-form">
+                            <form action="activities.php" method="get" class="input-group custom-search-form">
                                 <span class="input-group-btn">
                                     <a href="addInfo.php?action=addEntry">
                                         <button class="btn btn-outline btn-primary" title="Create a new Entry"><i class="fa fa-plus"></i></button>
@@ -91,36 +111,65 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                 <span class="input-group-btn">
 
                                 </span>
-                                <input type="text" class="form-control" id="searchForm" placeholder="Search For Activities...">
+                                <input name="event" list="eventList" type="text" class="form-control" id="searchForm" placeholder="Search For Activities...">
+                                <datalist id="eventList">
+                                    <?php
+                                    $events = "SELECT * FROM events WHERE isActive=1 ORDER BY eventTitle ASC";
+                                    $eventQuery = mysqli_query($conn, $events);
+                                    while($resultEvent = mysqli_fetch_assoc($eventQuery)) {
+                                        ?>
+                                        <option value="<?= $resultEvent['eventTitle'] ?>"></option>
+                                        <?php
+                                    }
+                                    ?>
+                                </datalist>
                                 <span class="input-group-btn">
 
                                     <button class="btn btn-default" type="button">
                                         <i class="fa fa-search"></i>
                                     </button>
                                 </span>
-                            </div>
+
+
+                            </form>
                         </div>
                     </h1>
                 </div>
             </div>
             <?php
+            echo $eventSQL;
+
             if(mysqli_num_rows($eventQuery) > 0){
-                ?>
-                <div class="col-lg-4 col-lg-offset-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading text-center">
-                            You haven't added any entries yet
+                if(get_value('event') != ""){
+                    echo get_value('event');
+                    $eventSQL = "SELECT * FROM userEvents userev 
+                         INNER JOIN events eve
+                         ON userev.eventID = eve.eventID
+                         INNER JOIN category cat 
+                         ON eve.categoryID = cat.categoryID
+                         WHERE userev.userID = 
+                         ".$_SESSION['user_id']." AND eve.eventTitle ='".str_replace('+', ' ', get_value('event'))."' ORDER BY userev.dateCreated DESC";
+
+                    $eventQuery = mysqli_query($conn, $eventSQL);
+                }
+                while($eventResult = mysqli_fetch_assoc($eventQuery)) {
+                    ?>
+                    <div class="col-lg-4 col-lg-offset-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading text-center">
+                                You haven't added any entries yet
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Create an Entry</button>
+                                <!-- /.table-responsive -->
+                            </div>
+                            <!-- /.panel-body -->
                         </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Create an Entry</button>
-                            <!-- /.table-responsive -->
-                        </div>
-                        <!-- /.panel-body -->
+                        <!-- /.panel -->
                     </div>
-                    <!-- /.panel -->
-                </div>
-                <?php
+                    <?php
+                }
             }else{
                 ?>
                 <div class="col-lg-4 col-lg-offset-4">
@@ -177,15 +226,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 
 <!-- Custom Theme JavaScript -->
 <script src="../dist/js/sb-admin-2.js"></script>
-<script src="/includes/bootcomplete.js-master/dist/jquery.bootcomplete.js"></script>
-<script type="text/javascript">
-    $('#searchForm').keydown(function(){
-        $('#searchForm').bootcomplete({
-            url:'/pages/ajax.php?action=getAllEvents',
-            minLength : 1
-        });
-    });
-</script>
+
 </body>
 
 </html>
