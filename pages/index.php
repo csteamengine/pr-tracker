@@ -102,6 +102,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                     <tr>
                                         <th>Activity</th>
                                         <th>Quantity</th>
+                                        <th>Reps</th>
+                                        <th>Sets</th>
                                         <th>Time</th>
                                         <th>Date</th>
                                         <th>Action</th>
@@ -114,6 +116,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                         <tr>
                                             <td><?= $result['eventTitle'] ?></td>
                                             <td><?= $result['quantity'] ?> <?= $result['unitTitle'] ?></td>
+                                            <td><?= $result['reps'] ?></td>
+                                            <td><?= $result['sets'] ?></td>
                                             <td><?= $result['time'] ?></td>
                                             <td><?= explode(" ",$result['dateOfEvent'])[0] ?></td>
                                             <td>
@@ -180,6 +184,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                     <tr>
                                         <th>Activity</th>
                                         <th>Quantity</th>
+                                        <th>Sets</th>
+                                        <th>Reps</th>
                                         <th>Time</th>
                                         <th>Deadline</th>
                                         <th>Action</th>
@@ -192,6 +198,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                         <tr>
                                             <td><?= $goalResult['eventTitle'] ?></td>
                                             <td><?= $goalResult['quantity'] ?> <?= $goalResult['unitTitle'] ?></td>
+                                            <td><?= $goalResult['reps'] ?></td>
+                                            <td><?= $goalResult['sets'] ?></td>
                                             <td><?= $goalResult['time'] ?></td>
                                             <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
                                             <td>

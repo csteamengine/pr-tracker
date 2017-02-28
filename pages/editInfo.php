@@ -13,6 +13,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     header("location: login.php");
 }
 
+
 $action = get_value('action');
 
 switch($action){
@@ -20,8 +21,7 @@ switch($action){
         $time = get_value('hours').":".get_value('minutes').":".get_value('seconds');
         $date = get_value('date')." ".get_value('time');
 
-
-        $addEntrySQL = "INSERT INTO userEvents (userID, categoryID, eventID, unitID, quantity, sets, time, dateOfEvent) VALUES ('".$_SESSION['user_id']."','".get_value('category')."','".get_value('activity')."','".get_value('units')."','".get_value('quantity')."','".get_value('sets')."','".$time."','".$date."')";
+        $addEntrySQL = "UPDATE userEvents SET userID='".$_SESSION['user_id']."', categoryID='".get_value('category')."', eventID='".get_value('activity')."', unitID='".get_value('units')."', quantity='".get_value('quantity')."', sets='".get_value('sets')."', time='".$time."', dateOfEvent='".$date."'";
         $addEntryQuery = mysqli_query($conn, $addEntrySQL);
 
         if(mysqli_error($conn) != ""){
@@ -32,8 +32,9 @@ switch($action){
         break;
 
     case 'insertEditActivity':
-        $addActivitySQL = "INSERT INTO events (eventTitle, eventDescription, categoryID, createdByUserID) VALUES ('".get_value('activity')."','".get_value('description')."','".get_value('category')."','".$_SESSION['user_id']."')";
+        $addActivitySQL = "UPDATE events SET eventTitle = '".get_value('activity')."', eventDescription='".get_value('description')."', categoryID='".get_value('category')."', createdByUserID='".$_SESSION['user_id']."'";
         $addActiveQuery = mysqli_query($conn, $addActivitySQL);
+
         if(mysqli_error($conn) != ""){
             $error = mysqli_error($conn);
             echo $error;
@@ -45,8 +46,7 @@ switch($action){
         $time = get_value('hours').":".get_value('minutes').":".get_value('seconds');
         $date = get_value('date')." 00:00:00";
 
-
-        $addEntrySQL = "INSERT INTO userGoals (userID, categoryID, eventID, unitID, quantity, sets, time, goalDeadline, goalDescription) VALUES ('".$_SESSION['user_id']."','".get_value('category')."','".get_value('activity')."','".get_value('units')."','".get_value('quantity')."','".get_value('sets')."','".$time."','".$date."', '".get_value('description')."')";
+        $addEntrySQL = "UPDATE userGoals SET userID='".$_SESSION['user_id']."', categoryID='".get_value('category')."', eventID='".get_value('activity')."', unitID='".get_value('units')."', quantity='".get_value('quantity')."', sets='".get_value('sets')."', time='".$time."', goalDeadline='".$date."', goalDescription=''".get_value('description')."'";
         $addEntryQuery = mysqli_query($conn, $addEntrySQL);
 
         if(mysqli_error($conn) != ""){
@@ -272,6 +272,22 @@ switch($action){
                                 <?php
                                 break;
                             case "editEntry":
+
+                                $eventSQL = "SELECT * FROM userEvents userev 
+                                             INNER JOIN events eve
+                                             ON userev.eventID = eve.eventID
+                                             INNER JOIN category cat 
+                                             ON eve.categoryID = cat.categoryID
+                                             INNER JOIN units unit
+                                             ON userev.unitID = unit.unitID
+                                             WHERE userev.userID = 
+                                             ".$_SESSION['user_id']." AND userEventID = ".get_value('id');
+
+                                $eventQuery = mysqli_query($conn, $eventSQL);
+                                if(mysqli_num_rows($eventQuery) == 0){
+                                    header("location: /pages/index.php");
+                                }
+                                $eventResult = mysqli_fetch_assoc($eventQuery);
                                 ?>
                                 <form action="addInfo.php?action=insertEntry" method="post" id="editForm">
                                     <div class="row">
@@ -288,7 +304,7 @@ switch($action){
                                                     <?php
                                                     while($result = mysqli_fetch_assoc($categoryQuery)){
                                                         ?>
-                                                        <option value="<?= $result['categoryID'] ?>" ><?= $result['categoryTitle'] ?></option>
+                                                        <option value="<?= $result['categoryID'] ?>" <?= $eventResult['categoryID'] == $result['categoryID'] ? "selected" : "" ?>><?= $result['categoryTitle'] ?></option>
                                                         <?php
                                                     }
                                                     ?>
@@ -298,17 +314,29 @@ switch($action){
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
-                                            <div class="form-group" id="groupActivity" hidden>
+                                            <div class="form-group" id="groupActivity">
                                                 <label>Activity</label>
-                                                <select class="form-control" id="activity" name="activity"></select>
+                                                <select class="form-control" id="activity" name="activity">
+                                                    <option value="" ></option>
+                                                    <?php
+                                                    $actSql = "SELECT eventID, eventTitle FROM events WHERE categoryID=".$eventResult['categoryID'];
+                                                    echo $actSql;
+                                                    $actquery = mysqli_query($conn, $actSql);
+                                                    while($actResult = mysqli_fetch_assoc($actquery)) {
+                                                        ?>
+                                                        <option value="<?= $actResult['eventID'] ?>" <?= $actResult['eventID'] == $eventResult['eventID'] ? "selected" : "" ?>><?= $actResult['eventTitle'] ?></option>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group" id="groupUnits" hidden>
+                                        <div class="form-group" id="groupUnits" >
                                             <div class=" col-xs-4 col-xs-offset-0 col-md-2 col-md-offset-3 col-lg-2 col-lg-offset-3">
                                                 <label>Quantity</label>
-                                                <input type="number" step="any" class="form-control" name="quantity" id="quantity" placeholder="Quantity">
+                                                <input type="number" step="any" class="form-control" name="quantity" id="quantity" placeholder="Quantity" value="<?= $eventResult['quantity'] ?>">
                                             </div>
                                             <div class=" col-xs-4 col-md-2 col-lg-2">
                                                 <label>Units</label>
@@ -319,7 +347,7 @@ switch($action){
                                                     $unitQuery = mysqli_query($conn, $unitSQL);
                                                     while($result = mysqli_fetch_assoc($unitQuery)){
                                                         ?>
-                                                        <option value="<?= $result['unitID'] ?>"><?= $result['unitTitle'] ?></option>
+                                                        <option value="<?= $result['unitID'] ?>" <?= $eventResult['unitID'] == $result['unitID'] ? "selected" : ""  ?>><?= $result['unitTitle'] ?></option>
                                                         <?php
                                                     }
                                                     ?>
@@ -327,43 +355,43 @@ switch($action){
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-xs-4">
                                                 <label for="sets">Sets</label>
-                                                <input type="number" name="sets" min="1" class="form-control" id="sets" value="1">
+                                                <input type="number" name="sets" min="1" class="form-control" id="sets" value="<?= $eventResult['sets'] ?>">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" id="timeRow" hidden>
+                                    <div class="row" id="timeRow" >
                                         <div class="form-group">
                                             <div class="col-lg-2 col-lg-offset-3 col-md-2 col-md-offset-3 col-xs-4 col-xs-offset-0">
                                                 <label for="hours">Hours</label>
-                                                <input type="number" min="0" name="hours" class="form-control" id="hours" value="0">
+                                                <input type="number" min="0" name="hours" class="form-control" id="hours" value="<?= explode(":", $eventResult['time'])[0] == 00 ? "0" : explode(":", $eventResult['time'])[0] ?>">
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-xs-4">
                                                 <label for="minutes">Minutes</label>
-                                                <input type="number" min="0" name="minutes" class="form-control" id="minutes" value="0">
+                                                <input type="number" min="0" name="minutes" class="form-control" id="minutes" value="<?= explode(":", $eventResult['time'])[1] == 00 ? "0" : ltrim(explode(":", $eventResult['time'])[1], '0') ?>">
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-xs-4">
                                                 <label for="seconds">Seconds</label>
-                                                <input type="number" step="any" name="seconds" min="0" class="form-control" id="seconds" value="0">
+                                                <input type="number" step="any" name="seconds" min="0" class="form-control" id="seconds" value="<?= explode(":", $eventResult['time'])[2] == 00 ? "0" : ltrim(explode(":", $eventResult['time'])[2], '0') ?>">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group" id="groupTime" hidden>
+                                        <div class="form-group" id="groupTime" >
                                             <div class="col-lg-3 col-lg-offset-3 col-md-3 col-md-offset-3 col-xs-6 col-xs-offset-0">
                                                 <label>Date</label>
-                                                <input class="form-control" name="date" type="date" id="date" placeholder="mm/dd/yyyy">
+                                                <input class="form-control" name="date" type="date" id="date" value="<?= explode(' ',$eventResult['dateOfEvent'])[0] ?>"  required>
                                             </div>
                                             <div class="col-lg-3 col-md-3 col-xs-6">
                                                 <label>Time</label>
-                                                <input class="form-control" name="time" type="time" id="time" placeholder="--:-- --">
+                                                <input class="form-control" name="time" type="time" id="time" value="<?= explode(' ',$eventResult['dateOfEvent'])[1] ?>">
                                             </div>
                                         </div>
                                     </div>
                                     <br>
                                     <div class="row">
-                                        <div class="form-group" id="submitGroup" hidden>
+                                        <div class="form-group" id="submitGroup" >
                                             <div class="col-lg-2 col-lg-offset-5 col-md-2 col-md-offset-5 col-xs-6 col-xs-offset-3">
-                                                <input type="submit"  value="Create Entry" class="btn btn-primary btn-outline form-control">
+                                                <input type="submit"  value="Edit Entry" class="btn btn-primary btn-outline form-control">
                                             </div>
                                         </div>
                                     </div>
