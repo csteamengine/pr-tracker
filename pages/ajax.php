@@ -15,6 +15,16 @@ switch($action){
     case 'getCategories':
 
         break;
+    case 'getAllEvents':
+        $sql = "SELECT eventID, eventTitle FROM events";
+        $query = mysqli_query($conn, $sql);
+        $json = array();
+        while($result = mysqli_fetch_assoc($query)){
+            array_push($json, array("id" => $result['eventID'], "label"=>$result['eventTitle']));
+        }
+        echo json_encode($json,JSON_UNESCAPED_UNICODE);
+        exit;
+        break;
     case 'getEvents':
         $sql = "SELECT eventID, eventTitle FROM events WHERE categoryID=".get_value('category');
         $query = mysqli_query($conn, $sql);

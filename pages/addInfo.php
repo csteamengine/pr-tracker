@@ -17,7 +17,7 @@ $action = get_value('action');
 
 switch($action){
     case 'getCategories':
-        $sql = "SELECT categoryTitle FROM category WHERE categoryTitle LIKE '%".get_value('value')."%'";
+        $sql = "SELECT categoryTitle FROM category WHERE categoryTitle LIKE '%".mysqli_real_escape_string($conn,get_value('value'))."%'";
         $query = mysqli_query($conn, $sql);
 
         $json = array();
@@ -34,7 +34,7 @@ switch($action){
         $date = get_value('date')." ".get_value('time');
 
 
-        $addEntrySQL = "INSERT INTO userEvents (userID, categoryID, eventID, unitID, quantity, reps, sets, time, dateOfEvent) VALUES ('".$_SESSION['user_id']."','".get_value('category')."','".get_value('activity')."','".get_value('units')."','".get_value('quantity')."','".get_value('reps')."','".get_value('sets')."','".$time."','".$date."')";
+        $addEntrySQL = "INSERT INTO userEvents (userID, categoryID, eventID, unitID, quantity, reps, sets, time, dateOfEvent) VALUES ('".mysqli_real_escape_string($conn,$_SESSION['user_id'])."','".mysqli_real_escape_string($conn,get_value('category'))."','".mysqli_real_escape_string($conn,get_value('activity'))."','".mysqli_real_escape_string($conn,get_value('units'))."','".mysqli_real_escape_string($conn,get_value('quantity'))."','".mysqli_real_escape_string($conn,get_value('reps'))."','".mysqli_real_escape_string($conn,get_value('sets'))."','".mysqli_real_escape_string($conn,$time)."','".mysqli_real_escape_string($conn,$date)."')";
         $addEntryQuery = mysqli_query($conn, $addEntrySQL);
 
         if(mysqli_error($conn) != ""){
@@ -45,7 +45,7 @@ switch($action){
         break;
 
     case 'insertActivity':
-        $addActivitySQL = "INSERT INTO events (eventTitle, eventDescription, categoryID, createdByUserID) VALUES ('".get_value('activity')."','".get_value('description')."','".get_value('category')."','".$_SESSION['user_id']."')";
+        $addActivitySQL = "INSERT INTO events (eventTitle, eventDescription, categoryID, createdByUserID) VALUES ('".mysqli_real_escape_string($conn,get_value('activity'))."','".mysqli_real_escape_string($conn,get_value('description'))."','".mysqli_real_escape_string($conn,get_value('category'))."','".mysqli_real_escape_string($conn,$_SESSION['user_id'])."')";
         $addActiveQuery = mysqli_query($conn, $addActivitySQL);
         if(mysqli_error($conn) != ""){
             $error = mysqli_error($conn);
@@ -62,7 +62,7 @@ switch($action){
         $date = get_value('date')." 00:00:00";
 
 
-        $addEntrySQL = "INSERT INTO userGoals (userID, categoryID, eventID, unitID, quantity, reps, sets, time, goalDeadline, goalDescription) VALUES ('".$_SESSION['user_id']."','".get_value('category')."','".get_value('activity')."','".get_value('units')."','".get_value('quantity')."','".get_value('reps')."','".get_value('sets')."','".$time."','".$date."', '".get_value('description')."')";
+        $addEntrySQL = "INSERT INTO userGoals (userID, categoryID, eventID, unitID, quantity, reps, sets, time, goalDeadline, goalDescription) VALUES ('".mysqli_real_escape_string($conn,$_SESSION['user_id'])."','".mysqli_real_escape_string($conn,get_value('category'))."','".mysqli_real_escape_string($conn,get_value('activity'))."','".mysqli_real_escape_string($conn,get_value('units'))."','".mysqli_real_escape_string($conn,get_value('quantity'))."','".mysqli_real_escape_string($conn,get_value('reps'))."','".mysqli_real_escape_string($conn,get_value('sets'))."','".mysqli_real_escape_string($conn,$time)."','".mysqli_real_escape_string($conn,$date)."', '".mysqli_real_escape_string($conn,get_value('description'))."')";
         $addEntryQuery = mysqli_query($conn, $addEntrySQL);
 
         if(mysqli_error($conn) != ""){
@@ -263,8 +263,8 @@ switch($action){
                             <div class="col-lg-3 col-lg-offset-3 col-md-3 col-md-offset-3 col-xs-5 col-xs-offset-1">
                                 <label>Measure</label>
                                 <?php
-                                    $measure = "SELECT * FROM measure WHERE isActive=1";
-                                    $measureQuery = mysqli_query($conn, $measure);
+                                $measure = "SELECT * FROM measure WHERE isActive=1";
+                                $measureQuery = mysqli_query($conn, $measure);
 
                                 ?>
                                 <select title="measure" class="form-control" name="measure">
@@ -311,106 +311,106 @@ switch($action){
 
             case "addEntry":
                 ?>
-                                <form action="addInfo.php?action=insertEntry" method="post" id="editForm">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
-                                            <div class="form-group">
-                                                <label>Category</label>
-                                                <?php
-                                                $categorySQL = "SELECT categoryTitle, categoryID FROM category";
-                                                $categoryQuery = mysqli_query($conn, $categorySQL);
-                                                ?>
+                <form action="addInfo.php?action=insertEntry" method="post" id="editForm">
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
+                            <div class="form-group">
+                                <label>Category</label>
+                                <?php
+                                $categorySQL = "SELECT categoryTitle, categoryID FROM category";
+                                $categoryQuery = mysqli_query($conn, $categorySQL);
+                                ?>
 
-                                                <select id="categorySelect" name="category" class="form-control" required>
-                                                    <option value="" >Select A Category...</option>
-                                                    <?php
-                                                    while($result = mysqli_fetch_assoc($categoryQuery)){
-                                                        ?>
-                                                        <option value="<?= $result['categoryID'] ?>" ><?= $result['categoryTitle'] ?></option>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
-                                            <div class="form-group" id="groupActivity" hidden>
-                                                <label>Activity</label>
-                                                <select class="form-control" id="activity" name="activity" required></select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group" id="groupUnits" hidden>
-                                            <div class=" col-xs-4 col-xs-offset-0 col-md-2 col-md-offset-3 col-lg-2 col-lg-offset-3">
-                                                <label>Quantity</label>
-                                                <input type="number" step="any" class="form-control" name="quantity" id="quantity" placeholder="Quantity">
-                                            </div>
-                                            <div class=" col-xs-4 col-md-2 col-lg-2">
-                                                <label>Units</label>
-                                                <select class="form-control" id="units" name="units">
-                                                    <option value=""></option>
-                                                    <?php
-                                                    $unitSQL = "SELECT * FROM units WHERE isActive =1 ORDER BY unitTitle ASC";
-                                                    $unitQuery = mysqli_query($conn, $unitSQL);
-                                                    while($result = mysqli_fetch_assoc($unitQuery)){
-                                                        ?>
-                                                        <option value="<?= $result['unitID'] ?>"><?= $result['unitTitle'] ?></option>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-1 col-md-1 col-xs-2">
-                                                <label for="sets">Reps</label>
-                                                <input type="number" name="reps" min="1" class="form-control" id="reps" value="1">
-                                            </div>
-                                            <div class="col-lg-1 col-md-1 col-xs-2">
-                                                <label for="sets">Sets</label>
-                                                <input type="number" name="sets" min="1" class="form-control" id="sets" value="1">
-                                            </div>
+                                <select id="categorySelect" name="category" class="form-control" required>
+                                    <option value="" >Select A Category...</option>
+                                    <?php
+                                    while($result = mysqli_fetch_assoc($categoryQuery)){
+                                        ?>
+                                        <option value="<?= $result['categoryID'] ?>" ><?= $result['categoryTitle'] ?></option>
+                                        <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
+                            <div class="form-group" id="groupActivity" hidden>
+                                <label>Activity</label>
+                                <select class="form-control" id="activity" name="activity" required></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group" id="groupUnits" hidden>
+                            <div class=" col-xs-4 col-xs-offset-0 col-md-2 col-md-offset-3 col-lg-2 col-lg-offset-3">
+                                <label>Quantity</label>
+                                <input type="number" step="any" class="form-control" name="quantity" id="quantity" placeholder="Quantity">
+                            </div>
+                            <div class=" col-xs-4 col-md-2 col-lg-2">
+                                <label>Units</label>
+                                <select class="form-control" id="units" name="units">
+                                    <option value=""></option>
+                                    <?php
+                                    $unitSQL = "SELECT * FROM units WHERE isActive =1 ORDER BY unitTitle ASC";
+                                    $unitQuery = mysqli_query($conn, $unitSQL);
+                                    while($result = mysqli_fetch_assoc($unitQuery)){
+                                        ?>
+                                        <option value="<?= $result['unitID'] ?>"><?= $result['unitTitle'] ?></option>
+                                        <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-xs-2">
+                                <label for="sets">Reps</label>
+                                <input type="number" name="reps" min="1" class="form-control" id="reps" value="1">
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-xs-2">
+                                <label for="sets">Sets</label>
+                                <input type="number" name="sets" min="1" class="form-control" id="sets" value="1">
+                            </div>
 
-                                        </div>
-                                    </div>
-                                    <div class="row" id="timeRow" hidden>
-                                        <div class="form-group">
-                                            <div class="col-lg-2 col-lg-offset-3 col-md-2 col-md-offset-3 col-xs-4 col-xs-offset-0">
-                                                <label for="hours">Hours</label>
-                                                <input type="number" min="0" name="hours" class="form-control" id="hours" value="0">
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-xs-4">
-                                                <label for="minutes">Minutes</label>
-                                                <input type="number" min="0" name="minutes" class="form-control" id="minutes" value="0">
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-xs-4">
-                                                <label for="seconds">Seconds</label>
-                                                <input type="number" step="any" name="seconds" min="0" class="form-control" id="seconds" value="0">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group" id="groupTime" hidden>
-                                            <div class="col-lg-3 col-lg-offset-3 col-md-3 col-md-offset-3 col-xs-6 col-xs-offset-0">
-                                                <label>Date</label>
-                                                <input class="form-control" name="date" type="date" id="date" required>
-                                            </div>
-                                            <div class="col-lg-3 col-md-3 col-xs-6">
-                                                <label>Time</label>
-                                                <input class="form-control" name="time" type="time" id="time">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="form-group" id="submitGroup" hidden>
-                                            <div class="col-lg-2 col-lg-offset-5 col-md-2 col-md-offset-5 col-xs-6 col-xs-offset-3">
-                                                <input type="submit"  value="Create Entry" class="btn btn-primary btn-outline form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                        </div>
+                    </div>
+                    <div class="row" id="timeRow" hidden>
+                        <div class="form-group">
+                            <div class="col-lg-2 col-lg-offset-3 col-md-2 col-md-offset-3 col-xs-4 col-xs-offset-0">
+                                <label for="hours">Hours</label>
+                                <input type="number" min="0" name="hours" class="form-control" id="hours" value="0">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-xs-4">
+                                <label for="minutes">Minutes</label>
+                                <input type="number" min="0" name="minutes" class="form-control" id="minutes" value="0">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-xs-4">
+                                <label for="seconds">Seconds</label>
+                                <input type="number" step="any" name="seconds" min="0" class="form-control" id="seconds" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group" id="groupTime" hidden>
+                            <div class="col-lg-3 col-lg-offset-3 col-md-3 col-md-offset-3 col-xs-6 col-xs-offset-0">
+                                <label>Date</label>
+                                <input class="form-control" name="date" type="date" id="date" required>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-xs-6">
+                                <label>Time</label>
+                                <input class="form-control" name="time" type="time" id="time">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group" id="submitGroup" hidden>
+                            <div class="col-lg-2 col-lg-offset-5 col-md-2 col-md-offset-5 col-xs-6 col-xs-offset-3">
+                                <input type="submit"  value="Create Entry" class="btn btn-primary btn-outline form-control">
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <?php
                 break;
             case "addFriend":

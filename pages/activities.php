@@ -35,6 +35,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <!-- MetisMenu CSS -->
     <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
 
+    <link href="/includes/bootcomplete.js-master/dist/bootcomplete.css" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
 
@@ -74,63 +76,57 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Your Activities</h1>
+                <div class="page-header row">
+                    <h1>
+                        <div class="col-lg-6 col-md-6 col-xs-8">
+                            Your Activities
+                        </div>
+                        <div class="col-lg-5 col-lg-offset-1 col-md-offset-1 col-md-5 col-xs-6" >
+                            <div class="input-group custom-search-form">
+                                <span class="input-group-btn">
+                                    <a href="addInfo.php?action=addEntry">
+                                        <button class="btn btn-outline btn-primary" title="Create a new Entry"><i class="fa fa-plus"></i></button>
+                                    </a>
+                                </span>
+                                <span class="input-group-btn">
+
+                                </span>
+                                <input type="text" class="form-control" id="searchForm" placeholder="Search For Activities...">
+                                <span class="input-group-btn">
+
+                                    <button class="btn btn-default" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </h1>
+                </div>
             </div>
             <?php
             if(mysqli_num_rows($eventQuery) > 0){
                 ?>
-                <div class="col-lg-6">
+                <div class="col-lg-4 col-lg-offset-4">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Kitchen Sink
+                        <div class="panel-heading text-center">
+                            You haven't added any entries yet
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Username</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Create an Entry</button>
                             <!-- /.table-responsive -->
                         </div>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
                 </div>
-            <?php
+                <?php
             }else{
                 ?>
                 <div class="col-lg-4 col-lg-offset-4">
                     <div class="panel panel-default">
                         <div class="panel-heading text-center">
-                            You haven't added any activities yet
+                            You haven't added any entries yet
                         </div>
 
 
@@ -145,7 +141,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                             </span>
                             </div>
                             <hr>
-                            <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Create an Activity</button>
+                            <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Create an Entry</button>
                             <!-- /.table-responsive -->
                         </div>
                         <!-- /.panel-body -->
@@ -181,17 +177,14 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 
 <!-- Custom Theme JavaScript -->
 <script src="../dist/js/sb-admin-2.js"></script>
-
-<script>
-    $(document).ready(function() {
-
-        $('input.city').typeahead({
-            name: 'city',
-            remote: 'city.php?query=%QUERY'
-
+<script src="/includes/bootcomplete.js-master/dist/jquery.bootcomplete.js"></script>
+<script type="text/javascript">
+    $('#searchForm').keydown(function(){
+        $('#searchForm').bootcomplete({
+            url:'/pages/ajax.php?action=getAllEvents',
+            minLength : 1
         });
-
-    })
+    });
 </script>
 </body>
 

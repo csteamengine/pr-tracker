@@ -111,7 +111,9 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                     </thead>
                                     <tbody>
                                     <?php
-                                    while($result = mysqli_fetch_assoc($eventQuery)) {
+                                    $count = 0;
+                                    while($count < 5 && $result = mysqli_fetch_assoc($eventQuery)) {
+
                                         ?>
                                         <tr>
                                             <td><?= $result['eventTitle'] ?></td>
@@ -126,11 +128,23 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                             </td>
                                         </tr>
                                         <?php
+                                        $count++;
                                     }
                                     ?>
 
                                     </tbody>
                                 </table>
+                                <?php
+                                if($result = mysqli_fetch_assoc( $eventQuery)){
+                                    ?>
+                                    <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-2 col-xs-offset-5">
+                                        <a href="/pages/activities.php">
+                                            <button type="button" class="btn btn-primary btn-outline">View All Entries</button>
+                                        </a>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
                             </div>
                         <?php
                         }else{
@@ -167,7 +181,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                       ON us.unitID = un.unitID
                       INNER JOIN events ev 
                       ON us.eventID = ev.eventID
-                     WHERE us.userID=".$_SESSION['user_id'];
+                     WHERE us.userID=".$_SESSION['user_id']."  AND us.isActive =1 ORDER BY us.dateCreated DESC";
 
                     $goalQuery = mysqli_query($conn, $goalSQL);
 
@@ -184,8 +198,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                     <tr>
                                         <th>Activity</th>
                                         <th>Quantity</th>
-                                        <th>Sets</th>
                                         <th>Reps</th>
+                                        <th>Sets</th>
                                         <th>Time</th>
                                         <th>Deadline</th>
                                         <th>Action</th>
@@ -193,7 +207,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                     </thead>
                                     <tbody>
                                     <?php
-                                    while($goalResult = mysqli_fetch_assoc($goalQuery)) {
+                                    $count = 0;
+                                    while($count < 5 && $goalResult = mysqli_fetch_assoc($goalQuery)) {
                                         ?>
                                         <tr>
                                             <td><?= $goalResult['eventTitle'] ?></td>
@@ -208,11 +223,22 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                             </td>
                                         </tr>
                                         <?php
+                                        $count++;
                                     }
                                     ?>
-
                                     </tbody>
                                 </table>
+                                <?php
+                                if($goalResult = mysqli_fetch_assoc( $goalQuery)){
+                                    ?>
+                                    <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-2 col-xs-offset-5">
+                                        <a href="/pages/goals.php">
+                                            <button type="button" class="btn btn-primary btn-outline">View All Goals</button>
+                                        </a>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
                             </div>
                             <?php
                         }else{

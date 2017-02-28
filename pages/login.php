@@ -52,7 +52,7 @@
                     $error = "failed_login";
                     header("location: createAccount.php?error=username_taken");
                 }else if(mysqli_num_rows($loginQuery) == 0){
-                    $sql = "INSERT INTO users (username, email, firstName, lastName, password) VALUE ('".get_value('username')."', '".get_value('email')."','".get_value('fName')."','".get_value('lName')."','".password_hash(get_value('password'), PASSWORD_BCRYPT)."')";
+                    $sql = "INSERT INTO users (username, email, firstName, lastName, password) VALUE ('".mysqli_real_escape_string($conn,get_value('username'))."', '".mysqli_real_escape_string($conn,get_value('email'))."','".mysqli_real_escape_string($conn,get_value('fName'))."','".mysqli_real_escape_string($conn,get_value('lName'))."','".password_hash(get_value('password'), PASSWORD_BCRYPT)."')";
                     $query = mysqli_query($conn, $sql);
                     $_SESSION['logged_in'] = true;
                     $_SESSION['FULLNAME'] = get_value('username');

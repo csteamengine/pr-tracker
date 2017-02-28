@@ -21,7 +21,7 @@ switch($action){
         $time = get_value('hours').":".get_value('minutes').":".get_value('seconds');
         $date = get_value('date')." ".get_value('time');
 
-        $addEntrySQL = "UPDATE userEvents SET userID='".$_SESSION['user_id']."', categoryID='".get_value('category')."', eventID='".get_value('activity')."', unitID='".get_value('units')."', quantity='".get_value('quantity')."', sets='".get_value('sets')."', time='".$time."', dateOfEvent='".$date."'";
+        $addEntrySQL = "UPDATE userEvents SET userID='".mysqli_real_escape_string($conn,$_SESSION['user_id'])."', categoryID='".mysqli_real_escape_string($conn,get_value('category'))."', eventID='".mysqli_real_escape_string($conn,get_value('activity'))."', unitID='".mysqli_real_escape_string($conn,get_value('units'))."', quantity='".mysqli_real_escape_string($conn,get_value('quantity'))."', sets='".mysqli_real_escape_string($conn,get_value('sets'))."', time='".mysqli_real_escape_string($conn,$time)."', dateOfEvent='".mysqli_real_escape_string($conn,$date)."' WHERE userEventID = ".mysqli_real_escape_string($conn,get_value('userEventID'));
         $addEntryQuery = mysqli_query($conn, $addEntrySQL);
 
         if(mysqli_error($conn) != ""){
@@ -32,7 +32,7 @@ switch($action){
         break;
 
     case 'insertEditActivity':
-        $addActivitySQL = "UPDATE events SET eventTitle = '".get_value('activity')."', eventDescription='".get_value('description')."', categoryID='".get_value('category')."', createdByUserID='".$_SESSION['user_id']."'";
+        $addActivitySQL = "UPDATE events SET eventTitle = '".mysqli_real_escape_string($conn,get_value('activity'))."', eventDescription='".mysqli_real_escape_string($conn,get_value('description'))."', categoryID='".mysqli_real_escape_string($conn,get_value('category'))."', createdByUserID='".mysqli_real_escape_string($conn,$_SESSION['user_id'])."' WHERE eventID = ".mysqli_real_escape_string($conn,get_value('eventID'));
         $addActiveQuery = mysqli_query($conn, $addActivitySQL);
 
         if(mysqli_error($conn) != ""){
@@ -43,10 +43,10 @@ switch($action){
         }
         break;
     case 'insertEditGoal':
-        $time = get_value('hours').":".get_value('minutes').":".get_value('seconds');
+        $time = str_pad(get_value('hours'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('minutes'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('seconds'),2,"0",STR_PAD_LEFT);
         $date = get_value('date')." 00:00:00";
 
-        $addEntrySQL = "UPDATE userGoals SET userID='".$_SESSION['user_id']."', categoryID='".get_value('category')."', eventID='".get_value('activity')."', unitID='".get_value('units')."', quantity='".get_value('quantity')."', sets='".get_value('sets')."', time='".$time."', goalDeadline='".$date."', goalDescription=''".get_value('description')."'";
+        $addEntrySQL = "UPDATE userGoals SET userID='".mysqli_real_escape_string($conn,$_SESSION['user_id'])."', categoryID='".mysqli_real_escape_string($conn,get_value('category'))."', eventID='".mysqli_real_escape_string($conn,get_value('activity'))."', unitID='".mysqli_real_escape_string($conn,get_value('units'))."', quantity='".mysqli_real_escape_string($conn,get_value('quantity'))."', reps='".mysqli_real_escape_string($conn,get_value('reps'))."', sets='".mysqli_real_escape_string($conn,get_value('sets'))."', time='".mysqli_real_escape_string($conn,$time)."', goalDeadline='".mysqli_real_escape_string($conn,$date)."', goalDescription='".mysqli_real_escape_string($conn, get_value('description'))."' WHERE userGoalID = ".mysqli_real_escape_string($conn,get_value('userGoalID'));
         $addEntryQuery = mysqli_query($conn, $addEntrySQL);
 
         if(mysqli_error($conn) != ""){
@@ -58,17 +58,17 @@ switch($action){
         break;
         break;
     case 'insertDeleteEntry':
-        $sql = "DELETE FROM userEvents WHERE userEventID =".get_value('id')." AND userID = ".$_SESSION['user_id'];
+        $sql = "DELETE FROM userEvents WHERE userEventID =".mysqli_real_escape_string($conn,get_value('id'))." AND userID = ".mysqli_real_escape_string($conn,$_SESSION['user_id']);
         $query = mysqli_query($conn, $sql);
         header("location: /pages/index.php");
         break;
     case 'insertDeleteActivity':
-        $sql = "DELETE FROM events WHERE eventID =".get_value('id')." AND userID = ".$_SESSION['user_id'];
+        $sql = "DELETE FROM events WHERE eventID =".mysqli_real_escape_string($conn,get_value('id'))." AND userID = ".mysqli_real_escape_string($conn,$_SESSION['user_id']);
         $query = mysqli_query($conn, $sql);
         header("location: /pages/index.php");
         break;
     case 'insertDeleteGoal':
-        $sql = "DELETE FROM userGoals WHERE userGoalID =".get_value('id')." AND userID = ".$_SESSION['user_id'];
+        $sql = "DELETE FROM userGoals WHERE userGoalID =".mysqli_real_escape_string($conn,get_value('id'))." AND userID = ".mysqli_real_escape_string($conn,$_SESSION['user_id']);
         $query = mysqli_query($conn, $sql);
         header("location: /pages/index.php");
         break;
@@ -221,7 +221,8 @@ switch($action){
                                 break;
                             case "editActivity":
                                 ?>
-                                <form action="addInfo.php?action=insertActivity" method="post" id="editForm">
+                                <form action="editInfo.php?action=insertEditActivity" method="post" id="editForm">
+                                    <input type="hidden" name="eventID" value="<?= get_value('id') ?>">
                                     <div class="row">
                                         <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
                                             <div class="form-group">
@@ -289,7 +290,9 @@ switch($action){
                                 }
                                 $eventResult = mysqli_fetch_assoc($eventQuery);
                                 ?>
-                                <form action="addInfo.php?action=insertEntry" method="post" id="editForm">
+                                <form action="editInfo.php?action=insertEditEntry" method="post" id="editForm">
+                                    <input type="hidden" name="userEventID" value="<?= get_value('id') ?>">
+
                                     <div class="row">
                                         <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
                                             <div class="form-group">
@@ -320,7 +323,6 @@ switch($action){
                                                     <option value="" ></option>
                                                     <?php
                                                     $actSql = "SELECT eventID, eventTitle FROM events WHERE categoryID=".$eventResult['categoryID'];
-                                                    echo $actSql;
                                                     $actquery = mysqli_query($conn, $actSql);
                                                     while($actResult = mysqli_fetch_assoc($actquery)) {
                                                         ?>
@@ -353,9 +355,13 @@ switch($action){
                                                     ?>
                                                 </select>
                                             </div>
-                                            <div class="col-lg-2 col-md-2 col-xs-4">
+                                            <div class="col-lg-1 col-md-1 col-xs-2">
+                                                <label for="sets">Reps</label>
+                                                <input type="number" name="reps" min="1" class="form-control" id="reps" value="1">
+                                            </div>
+                                            <div class="col-lg-1 col-md-1 col-xs-2">
                                                 <label for="sets">Sets</label>
-                                                <input type="number" name="sets" min="1" class="form-control" id="sets" value="<?= $eventResult['sets'] ?>">
+                                                <input type="number" name="sets" min="1" class="form-control" id="sets" value="1">
                                             </div>
                                         </div>
                                     </div>
@@ -391,7 +397,7 @@ switch($action){
                                     <div class="row">
                                         <div class="form-group" id="submitGroup" >
                                             <div class="col-lg-2 col-lg-offset-5 col-md-2 col-md-offset-5 col-xs-6 col-xs-offset-3">
-                                                <input type="submit"  value="Edit Entry" class="btn btn-primary btn-outline form-control">
+                                                <input type="submit"  value="Save Entry" class="btn btn-primary btn-outline form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -406,7 +412,8 @@ switch($action){
                                 }
                                 $goalResult = mysqli_fetch_assoc($query);
                                 ?>
-                                <form action="addInfo.php?action=insertGoal" method="post" id="editForm">
+                                <form action="editInfo.php?action=insertEditGoal" method="post" id="editForm">
+                                    <input type="hidden" name="userGoalID" value="<?= get_value('id') ?>">
                                     <div class="row">
                                         <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
                                             <div class="form-group">
@@ -434,6 +441,16 @@ switch($action){
                                             <div class="form-group" id="groupActivity" >
                                                 <label>Activity</label>
                                                 <select class="form-control" id="activity" name="activity">
+                                                    <option value="" ></option>
+                                                    <?php
+                                                    $actSql = "SELECT eventID, eventTitle FROM events WHERE categoryID=".$goalResult['categoryID'];
+                                                    $actquery = mysqli_query($conn, $actSql);
+                                                    while($actResult = mysqli_fetch_assoc($actquery)) {
+                                                        ?>
+                                                        <option value="<?= $actResult['eventID'] ?>" <?= $actResult['eventID'] == $goalResult['eventID'] ? "selected" : "" ?>><?= $actResult['eventTitle'] ?></option>
+                                                        <?php
+                                                    }
+                                                    ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -467,9 +484,13 @@ switch($action){
                                                     ?>
                                                 </select>
                                             </div>
-                                            <div class="col-lg-2 col-md-2 col-xs-4">
+                                            <div class="col-lg-1 col-md-1 col-xs-2">
+                                                <label for="sets">Reps</label>
+                                                <input type="number" name="reps" min="1" class="form-control" id="reps" value="1">
+                                            </div>
+                                            <div class="col-lg-1 col-md-1 col-xs-2">
                                                 <label for="sets">Sets</label>
-                                                <input type="number" name="sets" min="1" class="form-control" id="sets" value="<?= $goalResult['sets'] ?>">
+                                                <input type="number" name="sets" min="1" class="form-control" id="sets" value="1">
                                             </div>
                                         </div>
                                     </div>
@@ -477,15 +498,15 @@ switch($action){
                                         <div class="form-group">
                                             <div class="col-lg-2 col-lg-offset-3 col-md-2 col-md-offset-3 col-xs-4 col-xs-offset-0">
                                                 <label for="hours">Hours</label>
-                                                <input type="number" min="0" name="hours" class="form-control" id="hours" value="0">
+                                                <input type="number" min="0" name="hours" class="form-control" id="hours" value="<?= explode(":", $goalResult['time'])[0] == 00 ? "0" : explode(":", $goalResult['time'])[0] ?>">
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-xs-4">
                                                 <label for="minutes">Minutes</label>
-                                                <input type="number" min="0" name="minutes" class="form-control" id="minutes" value="0">
+                                                <input type="number" min="0" name="minutes" class="form-control" id="minutes" value="<?= explode(":", $goalResult['time'])[1] == 00 ? "0" : explode(":", $goalResult['time'])[1] ?>">
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-xs-4">
                                                 <label for="seconds">Seconds</label>
-                                                <input type="number" step="any" name="seconds" min="0" class="form-control" id="seconds" value="0">
+                                                <input type="number" step="any" name="seconds" min="0" class="form-control" id="seconds" value="<?= explode(":", $goalResult['time'])[2] == 00 ? "0" : explode(":", $goalResult['time'])[2] ?>">
                                             </div>
                                         </div>
                                     </div>
@@ -493,7 +514,7 @@ switch($action){
                                         <div class="form-group" id="groupTime">
                                             <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
                                                 <label>Goal Date</label>
-                                                <input class="form-control" name="date" type="date" id="date" placeholder="mm/dd/yyyy" value="<?= explode(" ", $goalResult['sets'])[0] ?>">
+                                                <input class="form-control" name="date" type="date" id="date" placeholder="mm/dd/yyyy" value="<?= explode(" ", $goalResult['goalDeadline'])[0] ?>">
                                             </div>
                                         </div>
                                     </div>

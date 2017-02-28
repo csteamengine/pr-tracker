@@ -47,10 +47,10 @@
                     <a href="index.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="records.php"><i class="fa fa-clock-o fa-fw"></i>Personal Records</a>
+                    <a href="activities.php"><i class="fa fa-bar-chart-o fa-fw"></i> Your Activities</a>
                 </li>
                 <li>
-                    <a href="activities.php"><i class="fa fa-bar-chart-o fa-fw"></i> Your Activities</a>
+                    <a href="records.php"><i class="fa fa-clock-o fa-fw"></i>Personal Records</a>
                 </li>
                 <li>
                     <a href="goals.php"><i class="fa fa-crosshairs fa-fw"></i>Personal Goals</a>
