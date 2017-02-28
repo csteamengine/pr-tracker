@@ -73,7 +73,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h5 class="pull-left">Recent Entries</h5>
-                        <a href="addInfo.php?action=addEntry"><button class="btn btn-outline btn-primary  pull-right"><i class="fa fa-plus"></i></button></a>
+                        <a href="addInfo.php?action=addEntry"><button class="btn btn-outline btn-primary  pull-right" title="Create a new Entry"><i class="fa fa-plus"></i></button></a>
                         <div class="clearfix"></div>
                     </div>
                     <?php
@@ -85,7 +85,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                      INNER JOIN units unit
                      ON userev.unitID = unit.unitID
                      WHERE userev.userID = 
-                     ".$_SESSION['user_id'];
+                     ".$_SESSION['user_id']." ORDER BY userev.dateCreated DESC";
 
                     $eventQuery = mysqli_query($conn, $eventSQL);
 
@@ -101,8 +101,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                     <thead>
                                     <tr>
                                         <th>Activity</th>
-                                        <th>Time</th>
                                         <th>Quantity</th>
+                                        <th>Time</th>
                                         <th>Date</th>
                                     </tr>
                                     </thead>
@@ -112,8 +112,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                         ?>
                                         <tr>
                                             <td><?= $result['eventTitle'] ?></td>
-                                            <td><?= $result['time'] ?></td>
                                             <td><?= $result['quantity'] ?> <?= $result['unitTitle'] ?></td>
+                                            <td><?= $result['time'] ?></td>
                                             <td><?= explode(" ",$result['dateOfEvent'])[0] ?></td>
                                         </tr>
                                         <?php
@@ -149,41 +149,45 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h5 class="pull-left">Your Goals</h5>
-                        <a href="addInfo.php?action=addGoal"><button class="btn btn-outline btn-primary pull-right"><i class="fa fa-plus"></i></button></a>
+                        <a href="addInfo.php?action=addGoal"><button class="btn btn-outline btn-primary pull-right" title="Create a new Goal"><i class="fa fa-plus"></i></button></a>
                         <div class="clearfix"></div>
                     </div>
                     <?php
-                    $eventSQL = "SELECT * FROM userGoals 
-                     WHERE userID=".$_SESSION['user_id'];
+                    $goalSQL = "SELECT * FROM userGoals us
+                      INNER JOIN units un 
+                      ON us.unitID = un.unitID
+                      INNER JOIN events ev 
+                      ON us.eventID = ev.eventID
+                     WHERE us.userID=".$_SESSION['user_id'];
 
-                    $eventQuery = mysqli_query($conn, $eventSQL);
+                    $goalQuery = mysqli_query($conn, $goalSQL);
 
                     ?>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <?php
-                        if(mysqli_num_rows($eventQuery) > 0){
+                        if(mysqli_num_rows($goalQuery) > 0){
 
                             ?>
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Username</th>
+                                        <th>Activity</th>
+                                        <th>Quantity</th>
+                                        <th>Time</th>
+                                        <th>Deadline</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <?php
-                                    while($result = mysqli_fetch_assoc($eventQuery)) {
+                                    while($goalResult = mysqli_fetch_assoc($goalQuery)) {
                                         ?>
                                         <tr>
-                                            <td>1</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
+                                            <td><?= $goalResult['eventTitle'] ?></td>
+                                            <td><?= $goalResult['quantity'] ?> <?= $goalResult['unitTitle'] ?></td>
+                                            <td><?= $goalResult['time'] ?></td>
+                                            <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
                                         </tr>
                                         <?php
                                     }

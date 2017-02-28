@@ -78,47 +78,73 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                 <div class="col-lg-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Kitchen Sink
+                            <h5 class="pull-left">Your Goals</h5>
+                            <a href="addInfo.php?action=addGoal"><button class="btn btn-outline btn-primary pull-right" title="Create a new Goal"><i class="fa fa-plus"></i></button></a>
+                            <div class="clearfix"></div>
                         </div>
+                        <?php
+                        $goalSQL = "SELECT * FROM userGoals us
+                      INNER JOIN units un 
+                      ON us.unitID = un.unitID
+                      INNER JOIN events ev 
+                      ON us.eventID = ev.eventID
+                     WHERE us.userID=".$_SESSION['user_id'];
+
+                        $goalQuery = mysqli_query($conn, $goalSQL);
+
+                        ?>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Username</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.table-responsive -->
+                            <?php
+                            if(mysqli_num_rows($goalQuery) > 0){
+
+                                ?>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Activity</th>
+                                            <th>Quantity</th>
+                                            <th>Time</th>
+                                            <th>Deadline</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        while($goalResult = mysqli_fetch_assoc($goalQuery)) {
+                                            ?>
+                                            <tr>
+                                                <td><?= $goalResult['eventTitle'] ?></td>
+                                                <td><?= $goalResult['quantity'] ?> <?= $goalResult['unitTitle'] ?></td>
+                                                <td><?= $goalResult['time'] ?></td>
+                                                <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        ?>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <?php
+                            }else{
+                                ?>
+                                <div class="panel-heading text-center">
+                                    You haven't added any personal goals yet.
+                                </div>
+                                <!-- /.panel-heading -->
+                                <div class="panel-body">
+                                    <a href="addInfo.php?action=addGoal" style="text-decoration: none">
+                                        <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Add a Goal</button>
+                                    </a>
+                                    <!-- /.table-responsive -->
+                                </div>
+                                <!-- /.panel-body -->
+                                <?php
+                            }
+                            ?>
                         </div>
-                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel -->
                 </div>
                 <?php
             }else{
@@ -130,7 +156,9 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Create new Goal</button>
+                            <a href="addInfo.php?action=addGoal" style="text-decoration: none">
+                                <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Create new Goal</button>
+                            </a>
                             <!-- /.table-responsive -->
                         </div>
                         <!-- /.panel-body -->
