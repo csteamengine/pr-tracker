@@ -121,7 +121,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                                 <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
                                                 <td>
                                                     <a href="/pages/editInfo.php?action=editGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-pencil" title="Edit Goal"></i></a>
-                                                    <a href="/pages/editInfo.php?action=deleteGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-trash" title="Edit Goal"></i></a>
+                                                    <a href="/pages/editInfo.php?action=deleteGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-trash" title="Delete Goal"></i></a>
                                                 </td>
                                             </tr>
                                             <?php

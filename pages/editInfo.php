@@ -57,6 +57,21 @@ switch($action){
         }
         break;
         break;
+    case 'insertDeleteEntry':
+        $sql = "DELETE FROM userEvents WHERE userEventID =".get_value('id')." AND userID = ".$_SESSION['user_id'];
+        $query = mysqli_query($conn, $sql);
+        header("location: /pages/index.php");
+        break;
+    case 'insertDeleteActivity':
+        $sql = "DELETE FROM events WHERE eventID =".get_value('id')." AND userID = ".$_SESSION['user_id'];
+        $query = mysqli_query($conn, $sql);
+        header("location: /pages/index.php");
+        break;
+    case 'insertDeleteGoal':
+        $sql = "DELETE FROM userGoals WHERE userGoalID =".get_value('id')." AND userID = ".$_SESSION['user_id'];
+        $query = mysqli_query($conn, $sql);
+        header("location: /pages/index.php");
+        break;
 
 }
 
@@ -174,6 +189,21 @@ switch($action){
                     case'editGoal':
                         ?>
                         <h1 class="page-header">Edit Goal</h1>
+                        <?php
+                        break;
+                    case 'deleteGoal':
+                        ?>
+                        <h1 class="page-header">Delete Goal</h1>
+                        <?php
+                        break;
+                    case 'deleteEntry':
+                        ?>
+                        <h1 class="page-header">Delete Entry</h1>
+                        <?php
+                        break;
+                    case 'deleteActivity':
+                        ?>
+                        <h1 class="page-header">Delete Activity</h1>
                         <?php
                         break;
                 }
@@ -448,6 +478,206 @@ switch($action){
                                         </div>
                                     </div>
                                 </form>
+                                <?php
+                                break;
+                            case "deleteGoal":
+                                ?>
+                                <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
+                                    <div class="panel panel-red">
+                                        <div class="panel-heading text-center">
+                                            Delete Goal
+                                        </div>
+                                        <div class="panel-body text-center">
+                                            <p>Are you sure you want to delete this goal?</p>
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover text-left">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Activity</th>
+                                                        <th>Quantity</th>
+                                                        <th>Time</th>
+                                                        <th>Deadline</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php
+                                                    $goalSQL = "SELECT * FROM userGoals us
+                                                                  INNER JOIN units un 
+                                                                  ON us.unitID = un.unitID
+                                                                  INNER JOIN events ev 
+                                                                  ON us.eventID = ev.eventID
+                                                                 WHERE us.userID=".$_SESSION['user_id']." 
+                                                                 AND us.userGoalID = ".get_value('id');
+
+                                                    $goalQuery = mysqli_query($conn, $goalSQL);
+                                                    if(mysqli_num_rows($goalQuery) == 0){
+                                                        header("location: /pages/index.php");
+                                                    }
+                                                    $goalResult = mysqli_fetch_assoc($goalQuery)
+                                                    ?>
+                                                    <tr>
+                                                        <td><?= $goalResult['eventTitle'] ?></td>
+                                                        <td><?= $goalResult['quantity'] ?> <?= $result['unitTitle'] ?></td>
+                                                        <td><?= $goalResult['time'] ?></td>
+                                                        <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
+                                                    </tr>
+                                                    <?php
+
+                                                    ?>
+                                                    </tbody>
+                                                </table>
+                                                <div class="col-lg-12">
+                                                    <form action="/pages/editInfo.php" method="POST" >
+                                                        <input type="hidden" name="id" value="<?= $goalResult['userGoalID'] ?>">
+                                                        <input type="hidden" name="action" value="insertDeleteGoal">
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-4 col-xs-offset-4">
+                                                                    <input type="submit" class="btn btn btn-danger form-control" value="Delete Goal">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.col-lg-4 -->
+                                </div>
+                                <?php
+                                break;
+                            case "deleteEntry":
+                                ?>
+                                <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
+                                    <div class="panel panel-red">
+                                        <div class="panel-heading text-center">
+                                            Delete Entry
+                                        </div>
+                                        <div class="panel-body text-center">
+                                            <p>Are you sure you want to delete this entry?</p>
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover text-left">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Activity</th>
+                                                        <th>Quantity</th>
+                                                        <th>Sets</th>
+                                                        <th>Time</th>
+                                                        <th>Date</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php
+                                                    $eventSQL = "SELECT * FROM userEvents userev 
+                                                                 INNER JOIN events eve
+                                                                 ON userev.eventID = eve.eventID
+                                                                 INNER JOIN category cat 
+                                                                 ON eve.categoryID = cat.categoryID
+                                                                 INNER JOIN units unit
+                                                                 ON userev.unitID = unit.unitID
+                                                                 WHERE userev.userID = 
+                                                                 ".$_SESSION['user_id']." AND userEventID = ".get_value('id');
+                                                    $eventQuery = mysqli_query($conn, $eventSQL);
+                                                    if(mysqli_num_rows($eventQuery) == 0){
+                                                        header("location: /pages/index.php");
+                                                    }
+                                                    $entryResult = mysqli_fetch_assoc($eventQuery)
+                                                    ?>
+                                                    <tr>
+                                                        <td><?= $entryResult['eventTitle'] ?></td>
+                                                        <td><?= $entryResult['quantity'] ?> <?= $entryResult['unitTitle'] ?></td>
+                                                        <td><?= $entryResult['sets'] ?></td>
+                                                        <td><?= $entryResult['time'] ?></td>
+                                                        <td><?= explode(" ",$entryResult['dateOfEvent'])[0] ?></td>
+                                                    </tr>
+                                                    <?php
+
+                                                    ?>
+                                                    </tbody>
+                                                </table>
+                                                <div class="col-lg-12">
+                                                    <form action="/pages/editInfo.php" method="POST" >
+                                                        <input type="hidden" name="id" value="<?= $entryResult['userEventID'] ?>">
+                                                        <input type="hidden" name="action" value="insertDeleteEntry">
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-4 col-xs-offset-4">
+                                                                    <input type="submit" class="btn btn btn-danger form-control" value="Delete Entry">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.col-lg-4 -->
+                                </div>
+                                <?php
+                                break;
+                            case "deleteActivity":
+                                ?>
+                                <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
+                                    <div class="panel panel-red">
+                                        <div class="panel-heading text-center">
+                                            Delete Goal
+                                        </div>
+                                        <div class="panel-body text-center">
+                                            <p>Are you sure you want to delete this goal?</p>
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover text-left">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Activity</th>
+                                                        <th>Quantity</th>
+                                                        <th>Time</th>
+                                                        <th>Deadline</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php
+                                                    $goalSQL = "SELECT * FROM userGoals us
+                                                                  INNER JOIN units un 
+                                                                  ON us.unitID = un.unitID
+                                                                  INNER JOIN events ev 
+                                                                  ON us.eventID = ev.eventID
+                                                                 WHERE us.userID=".$_SESSION['user_id'];
+
+                                                    $goalQuery = mysqli_query($conn, $goalSQL);
+                                                    $goalResult = mysqli_fetch_assoc($goalQuery)
+                                                    ?>
+                                                    <tr>
+                                                        <td><?= $goalResult['eventTitle'] ?></td>
+                                                        <td><?= $goalResult['quantity'] ?> <?= $result['unitTitle'] ?></td>
+                                                        <td><?= $goalResult['time'] ?></td>
+                                                        <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
+                                                    </tr>
+                                                    <?php
+
+                                                    ?>
+                                                    </tbody>
+                                                </table>
+                                                <div class="col-lg-12">
+                                                    <form action="/pages/editInfo.php" method="POST" >
+                                                        <input type="hidden" name="id" value="<?= $goalResult['goalID'] ?>">
+                                                        <input type="hidden" name="action" value="insertDeleteGoal">
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-4 col-xs-offset-4">
+                                                                    <input type="submit" class="btn btn btn-danger form-control" value="Delete Goal">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.col-lg-4 -->
+                                </div>
                                 <?php
                                 break;
                         }

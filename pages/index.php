@@ -104,6 +104,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                         <th>Quantity</th>
                                         <th>Time</th>
                                         <th>Date</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -115,6 +116,10 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                             <td><?= $result['quantity'] ?> <?= $result['unitTitle'] ?></td>
                                             <td><?= $result['time'] ?></td>
                                             <td><?= explode(" ",$result['dateOfEvent'])[0] ?></td>
+                                            <td>
+                                                <a href="/pages/editInfo.php?action=editEntry&id=<?= $result['userEventID'] ?>"><i class="fa fa-pencil" title="Edit Entry"></i></a>
+                                                <a href="/pages/editInfo.php?action=deleteEntry&id=<?= $result['userEventID'] ?>"><i class="fa fa-trash" title="Delete Entry"></i></a>
+                                            </td>
                                         </tr>
                                         <?php
                                     }
@@ -177,6 +182,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                         <th>Quantity</th>
                                         <th>Time</th>
                                         <th>Deadline</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -188,6 +194,10 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                             <td><?= $goalResult['quantity'] ?> <?= $goalResult['unitTitle'] ?></td>
                                             <td><?= $goalResult['time'] ?></td>
                                             <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
+                                            <td>
+                                                <a href="/pages/editInfo.php?action=editGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-pencil" title="Edit Goal"></i></a>
+                                                <a href="/pages/editInfo.php?action=deleteGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-trash" title="Delete Goal"></i></a>
+                                            </td>
                                         </tr>
                                         <?php
                                     }

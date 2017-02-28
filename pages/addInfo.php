@@ -30,8 +30,7 @@ switch($action){
         break;
 
     case 'insertEntry':
-
-        $time = get_value('hours').":".get_value('minutes').":".get_value('seconds');
+        $time = str_pad(get_value('hours'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('minutes'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('seconds'),2,"0",STR_PAD_LEFT);
         $date = get_value('date')." ".get_value('time');
 
 
@@ -59,7 +58,7 @@ switch($action){
 
         break;
     case 'insertGoal':
-        $time = get_value('hours').":".get_value('minutes').":".get_value('seconds');
+        $time = str_pad(get_value('hours'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('minutes'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('seconds'),2,"0",STR_PAD_LEFT);
         $date = get_value('date')." 00:00:00";
 
 
@@ -299,7 +298,7 @@ switch($action){
                                         <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
                                             <div class="form-group" id="groupActivity" hidden>
                                                 <label>Activity</label>
-                                                <select class="form-control" id="activity" name="activity"></select>
+                                                <select class="form-control" id="activity" name="activity" required></select>
                                             </div>
                                         </div>
                                     </div>
@@ -350,11 +349,11 @@ switch($action){
                                         <div class="form-group" id="groupTime" hidden>
                                             <div class="col-lg-3 col-lg-offset-3 col-md-3 col-md-offset-3 col-xs-6 col-xs-offset-0">
                                                 <label>Date</label>
-                                                <input class="form-control" name="date" type="date" id="date" placeholder="mm/dd/yyyy">
+                                                <input class="form-control" name="date" type="date" id="date" required>
                                             </div>
                                             <div class="col-lg-3 col-md-3 col-xs-6">
                                                 <label>Time</label>
-                                                <input class="form-control" name="time" type="time" id="time" placeholder="--:-- --">
+                                                <input class="form-control" name="time" type="time" id="time">
                                             </div>
                                         </div>
                                     </div>
