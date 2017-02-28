@@ -97,7 +97,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 
                             ?>
                             <div class="table-responsive">
-                                <table class="table table-striped">
+                                <table class="table table-striped table-hover">
                                     <thead>
                                     <tr>
                                         <th>Activity</th>
@@ -170,7 +170,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 
                             ?>
                             <div class="table-responsive">
-                                <table class="table table-striped">
+                                <table class="table table-striped table-hover">
                                     <thead>
                                     <tr>
                                         <th>Activity</th>
