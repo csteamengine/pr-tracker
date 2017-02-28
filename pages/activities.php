@@ -7,6 +7,7 @@
  */
 
 include "../includes/php/base.php";
+include "../includes/php/general.php";
 
 if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     header("location: login.php");
@@ -83,14 +84,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <?php
     include "navigation.php";
 
-    $eventSQL = "SELECT * FROM userEvents userev 
-                         INNER JOIN events eve
-                         ON userev.eventID = eve.eventID
-                         INNER JOIN category cat 
-                         ON eve.categoryID = cat.categoryID
-                         WHERE userev.userID = 
-                         ".$_SESSION['user_id']." ORDER BY userev.dateCreated DESC";
-    $eventQuery = mysqli_query($conn, $eventSQL);
+
 
     ?>
     <div id="page-wrapper">
@@ -98,10 +92,10 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             <div class="col-lg-12">
                 <div class="page-header row">
                     <h1>
-                        <div class="col-lg-6 col-md-6 col-xs-8">
+                        <div class="col-lg-6 col-md-6 col-xs-8 col-lg-offset-0 col-md-offset-0 col-xs-offset-3">
                             Your Activities
                         </div>
-                        <div class="col-lg-5 col-lg-offset-1 col-md-offset-1 col-md-5 col-xs-6" >
+                        <div class="col-lg-5 col-lg-offset-1 col-md-offset-1 col-md-5 col-xs-6 col-xs-offset-3" >
                             <form action="activities.php" method="get" class="input-group custom-search-form">
                                 <span class="input-group-btn">
                                     <a href="addInfo.php?action=addEntry">
@@ -137,39 +131,100 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                 </div>
             </div>
             <?php
-            echo $eventSQL;
 
-            if(mysqli_num_rows($eventQuery) > 0){
-                if(get_value('event') != ""){
-                    echo get_value('event');
-                    $eventSQL = "SELECT * FROM userEvents userev 
+            $eventSQL = "SELECT * FROM userEvents userev 
                          INNER JOIN events eve
                          ON userev.eventID = eve.eventID
                          INNER JOIN category cat 
                          ON eve.categoryID = cat.categoryID
                          WHERE userev.userID = 
-                         ".$_SESSION['user_id']." AND eve.eventTitle ='".str_replace('+', ' ', get_value('event'))."' ORDER BY userev.dateCreated DESC";
+                         ".$_SESSION['user_id']." GROUP BY eve.eventID ORDER BY userev.dateCreated DESC";
+
+            $eventQuery = mysqli_query($conn, $eventSQL);
+            if(mysqli_num_rows($eventQuery) > 0){
+
+                $event = get_value('event');
+                if(!empty($event)){
+                    $eventSQL = "SELECT * FROM userEvents userev
+                         INNER JOIN events eve
+                         ON userev.eventID = eve.eventID
+                         INNER JOIN category cat
+                         ON eve.categoryID = cat.categoryID
+                         WHERE userev.userID =
+                         ".$_SESSION['user_id']." AND eve.eventTitle ='".str_replace('+', ' ', get_value('event'))."' GROUP BY eve.eventID ORDER BY userev.dateCreated DESC";
 
                     $eventQuery = mysqli_query($conn, $eventSQL);
                 }
+                ?>
+                <div class="row">
+            <?php
                 while($eventResult = mysqli_fetch_assoc($eventQuery)) {
+
                     ?>
-                    <div class="col-lg-4 col-lg-offset-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading text-center">
-                                You haven't added any entries yet
+
+                        <div class="col-lg-6 col-md-6 col-lg-offset-0 col-md-offset-0 col-xs-10 col-xs-offset-1">
+                            <div class="panel panel-default">
+                                <div class="panel-heading text-center">
+                                    <h5 class="pull-left"><?= $eventResult['eventTitle'] ?></h5>
+                                    <a href="addInfo.php?action=addEntry&category=<?= $eventResult['categoryID'] ?>&event=<?= $eventResult['eventID'] ?>"><button class="btn btn-outline btn-primary  pull-right" title="Create a new Entry"><i class="fa fa-plus"></i></button></a>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Activity</th>
+                                                <th>Quantity</th>
+                                                <th>Reps</th>
+                                                <th>Sets</th>
+                                                <th>Time</th>
+                                                <th>Date</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php
+                                            $newSQL = "SELECT * FROM userEvents userev 
+                                                 INNER JOIN events eve
+                                                 ON userev.eventID = eve.eventID
+                                                 INNER JOIN category cat 
+                                                 ON eve.categoryID = cat.categoryID
+                                                 WHERE userev.userID = 
+                                                 ".$_SESSION['user_id']." AND eve.eventID = ".$eventResult['eventID']." ORDER BY userev.dateCreated DESC";
+                                            $newQuery = mysqli_query($conn, $newSQL);
+                                            while($newResult = mysqli_fetch_assoc($newQuery)) {
+                                                ?>
+                                                <tr>
+                                                    <td><?= $newResult['eventTitle'] ?></td>
+                                                    <td><?= $newResult['quantity'] ?> <?= $newResult['unitTitle'] ?></td>
+                                                    <td><?= $newResult['reps'] ?></td>
+                                                    <td><?= $newResult['sets'] ?></td>
+                                                    <td><?= $newResult['time'] ?></td>
+                                                    <td><?= explode(" ",$newResult['dateOfEvent'])[0] ?></td>
+                                                    <td>
+                                                        <a href="/pages/editInfo.php?action=editEntry&id=<?= $newResult['userEventID'] ?>"><i class="fa fa-pencil" title="Edit Entry"></i></a>
+                                                        <a href="/pages/editInfo.php?action=deleteEntry&id=<?= $newResult['userEventID'] ?>"><i class="fa fa-trash" title="Delete Entry"></i></a>
+                                                    </td>
+                                                </tr>
+
+                                                <?php
+                                            }
+                                            ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Create an Entry</button>
-                                <!-- /.table-responsive -->
-                            </div>
-                            <!-- /.panel-body -->
+                            <!-- /.panel -->
                         </div>
-                        <!-- /.panel -->
-                    </div>
+
                     <?php
+
                 }
+                ?>
+                </div>
+                <?php
             }else{
                 ?>
                 <div class="col-lg-4 col-lg-offset-4">

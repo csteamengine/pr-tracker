@@ -326,7 +326,7 @@ switch($action){
                                     <?php
                                     while($result = mysqli_fetch_assoc($categoryQuery)){
                                         ?>
-                                        <option value="<?= $result['categoryID'] ?>" ><?= $result['categoryTitle'] ?></option>
+                                        <option value="<?= $result['categoryID'] ?>" <?= get_value('category') == $result['categoryID'] ? "selected" : "" ?> ><?= $result['categoryTitle'] ?></option>
                                         <?php
                                     }
                                     ?>
@@ -338,7 +338,19 @@ switch($action){
                         <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
                             <div class="form-group" id="groupActivity" hidden>
                                 <label>Activity</label>
-                                <select class="form-control" id="activity" name="activity" required></select>
+                                <select class="form-control" id="activity" name="activity" required>
+                                    <?php
+                                    if(!empty(get_value('event'))){
+                                        $activities = "SELECT * FROM events WHERE eventID=".get_value('event');
+                                        $actQuery = mysqli_query($conn, $activities);
+                                        while($actRes = mysqli_fetch_assoc($actQuery)) {
+                                            ?>
+                                            <option value="<?= $actRes['eventID'] ?>" <?= $actRes['eventID'] == get_value('event') ? "selected" : "" ?>><?= $actRes['eventTitle'] ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -617,6 +629,17 @@ switch($action){
 <?php
 switch($action){
     case 'addEntry':
+        if(get_value('category') != "" && get_value('event') != ""){
+            ?>
+            <script>
+                $('#groupActivity').show();
+                $('#groupTime').show();
+                $('#timeRow').show();
+                $('#groupUnits').show();
+                $('#submitGroup').show();
+            </script>
+            <?php
+        }
         ?>
         <script type="text/javascript">
 

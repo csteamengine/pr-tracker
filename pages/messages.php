@@ -8,6 +8,7 @@
 
 
 include "../includes/php/base.php";
+include "../includes/php/general.php";
 
 if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     header("location: login.php");
@@ -59,16 +60,10 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <?php
     include "navigation.php";
 
-    $eventSQL = "SELECT * FROM userEvents userev 
-     INNER JOIN events eve
-     ON userev.eventID = eve.eventID
-     INNER JOIN category cat 
-     ON ev.categoryID = cat.categoryID
-     WHERE userev.userID = 
-     ".$_SESSION['user_id'];
+    $eventSQL = "SELECT * FROM messages WHERE toUserID = 
+     ".$_SESSION['user_id']." OR fromUserID = ".$_SESSION['user_id'];
 
     $eventQuery = mysqli_query($conn, $eventSQL);
-
 
     ?>
     <div id="page-wrapper">
@@ -77,7 +72,10 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                 <h1 class="page-header">Messages</h1>
             </div>
             <?php
+
             if(mysqli_num_rows($eventQuery) > 0){
+
+
                 ?>
                 <div class="col-lg-6">
                     <div class="panel panel-default">
