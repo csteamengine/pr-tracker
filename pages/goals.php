@@ -112,6 +112,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                             <th>Quantity</th>
                                             <th>Time</th>
                                             <th>Deadline</th>
+                                            <th>Progress</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -124,6 +125,13 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                                 <td><?= $goalResult['quantity'] ?> <?= $goalResult['unitTitle'] ?></td>
                                                 <td><?= $goalResult['time'] ?></td>
                                                 <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
+                                                <td>
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-info" style="width: 80%">
+                                                                Low Disk Space: 80% full
+                                                            </div>
+                                                        </div>
+                                                </td>
                                                 <td>
                                                     <a href="/pages/editInfo.php?action=editGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-pencil" title="Edit Goal"></i></a>
                                                     <a href="/pages/editInfo.php?action=deleteGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-trash" title="Delete Goal"></i></a>
