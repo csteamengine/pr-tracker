@@ -7,7 +7,7 @@
  */
 
 include "../includes/php/base.php";
-
+include "../includes/php/general.php";
 if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     header("location: login.php");
 }
@@ -206,7 +206,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge"><?= $diff->format("%a") ?></div>
-                                    <div>Day<?= $diff->format("%a") > 1 ? "s" : ""  ?> since last entry</div>
+                                    <div>Day<?= $diff->format("%a") > 1 || $diff->format("%a") == 0 ? "s" : ""  ?> since last entry</div>
                                 </div>
                             </div>
                         </div>
@@ -266,7 +266,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                         <div class="clearfix"></div>
                     </div>
                     <?php
-                    $eventSQL = "SELECT * FROM userEvents userev 
+                    $eventSQL = "SELECT *, userev.measureID as theMeasure FROM userEvents userev 
                      INNER JOIN events eve
                      ON userev.eventID = eve.eventID
                      INNER JOIN category cat 
@@ -274,7 +274,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                      INNER JOIN units unit
                      ON userev.unitID = unit.unitID
                      WHERE userev.userID = 
-                     ".$_SESSION['user_id']." and userev.isActive=1 ORDER BY userev.dateOfEvent DESC";
+                     ".$_SESSION['user_id']." and userev.isActive=1 ORDER BY userev.dateOfEvent DESC LIMIT 5";
 
                     $eventQuery = mysqli_query($conn, $eventSQL);
 
@@ -293,22 +293,26 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                     <th>Reps</th>
                                     <th>Sets</th>
                                     <th>Time</th>
+                                    <th>Average</th>
                                     <th>Date</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <?php
-                                $count = 0;
-                                while($count < 5 && $result = mysqli_fetch_assoc($eventQuery)) {
+                                while($result = mysqli_fetch_assoc($eventQuery)) {
 
+                                    $average = getAverage($result);
                                     ?>
                                     <tr>
                                         <td><?= $result['eventTitle'] ?></td>
                                         <td><?= $result['quantity'] ?> <?= $result['unitTitle'] ?></td>
                                         <td><?= $result['reps'] ?></td>
                                         <td><?= $result['sets'] ?></td>
-                                        <td><?= $result['time'] ?></td>
+                                        <td><?= $result['time'] == "00:00:00" ? "N/A" : $result['time'] ?></td>
+                                        <td>
+                                            <?= $average ?>
+                                        </td>
                                         <td><?= explode(" ",$result['dateOfEvent'])[0] ?></td>
                                         <td class="text-center">
                                             <a href="/pages/editInfo.php?action=editEntry&id=<?= $result['userEventID'] ?>"><i class="fa fa-pencil" title="Edit Entry"></i></a>
@@ -316,7 +320,6 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                         </td>
                                     </tr>
                                     <?php
-                                    $count++;
                                 }
                                 ?>
                                 </tbody>
@@ -359,12 +362,12 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                         <div class="clearfix"></div>
                     </div>
                     <?php
-                    $goalSQL = "SELECT * FROM userGoals us
+                    $goalSQL = "SELECT *, us.measureID as theMeasure FROM userGoals us
                       INNER JOIN units un 
                       ON us.unitID = un.unitID
                       INNER JOIN events ev 
                       ON us.eventID = ev.eventID
-                     WHERE us.userID=".$_SESSION['user_id']."  AND us.isActive =1 ORDER BY us.goalDeadline ASC";
+                     WHERE us.userID=".$_SESSION['user_id']."  AND us.isActive =1 ORDER BY us.goalDeadline ASC LIMIT 5";
 
                     $goalQuery = mysqli_query($conn, $goalSQL);
 
@@ -383,6 +386,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                     <th>Reps</th>
                                     <th>Sets</th>
                                     <th>Time</th>
+                                    <th>Average</th>
                                     <th>Deadline</th>
                                     <th>Progress</th>
                                     <th>Action</th>
@@ -392,13 +396,15 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                 <?php
                                 $count = 1;
                                 while($goalResult = mysqli_fetch_assoc($goalQuery)) {
+                                    $average = getGoalAverage($goalResult);
                                     ?>
                                     <tr>
                                         <td><?= $goalResult['eventTitle'] ?></td>
                                         <td><?= $goalResult['quantity'] ?> <?= $goalResult['unitTitle'] ?></td>
                                         <td><?= $goalResult['reps'] ?></td>
                                         <td><?= $goalResult['sets'] ?></td>
-                                        <td><?= $goalResult['time'] ?></td>
+                                        <td><?= $goalResult['time'] == "00:00:00" ? "N/A" : $goalResult['time'] ?></td>
+                                        <td><?= $average ?></td>
                                         <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
                                         <td>
                                             <div class="progress progress-striped">
@@ -484,7 +490,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             'paging': false,
             'searching': false,
             'info': false,
-            "order": [[ 5, "asc" ]]
+            "order": [[ 6, "asc" ]]
         });
     });
     $(document).ready(function() {
@@ -493,10 +499,12 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             'paging': false,
             'searching': false,
             'info': false,
-            "order": [[ 5, "desc" ]]
+            "order": [[ 6, "desc" ]]
         });
     });
 </script>
 </body>
 
 </html>
+
+<?php

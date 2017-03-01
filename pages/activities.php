@@ -234,7 +234,9 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 <script>
     $(document).ready(function() {
         $('#dataTables-Entries').DataTable({
-            responsive: true
+            responsive: true,
+            "order": [[ 5, "desc" ]]
+
         });
     });
 </script>

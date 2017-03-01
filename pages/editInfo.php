@@ -571,7 +571,7 @@ switch($action){
                                 break;
                             case "deleteGoal":
                                 ?>
-                                <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
+                                <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2">
                                     <div class="panel panel-red">
                                         <div class="panel-heading text-center">
                                             Delete Goal
@@ -606,7 +606,7 @@ switch($action){
                                                     ?>
                                                     <tr>
                                                         <td><?= $goalResult['eventTitle'] ?></td>
-                                                        <td><?= $goalResult['quantity'] ?> <?= $result['unitTitle'] ?></td>
+                                                        <td><?= $goalResult['quantity'] ?> <?= $goalResult['unitTitle'] ?></td>
                                                         <td><?= $goalResult['time'] ?></td>
                                                         <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
                                                     </tr>
@@ -638,7 +638,7 @@ switch($action){
                                 break;
                             case "deleteEntry":
                                 ?>
-                                <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
+                                <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2">
                                     <div class="panel panel-red">
                                         <div class="panel-heading text-center">
                                             Delete Entry
@@ -708,7 +708,7 @@ switch($action){
                                 break;
                             case "deleteActivity":
                                 ?>
-                                <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-8 col-xs-offset-2">
+                                <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2">
                                     <div class="panel panel-red">
                                         <div class="panel-heading text-center">
                                             Delete Goal
