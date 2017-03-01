@@ -303,12 +303,18 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 <script>
     $(document).ready(function() {
         $('#dataTables-Goals').DataTable({
-            responsive: true
+            responsive: true,
+            'paging': false,
+            'searching': false,
+            'info': false
         });
     });
     $(document).ready(function() {
         $('#dataTables-Entries').DataTable({
-            responsive: true
+            responsive: true,
+            'paging': false,
+            'searching': false,
+            'info': false
         });
     });
 </script>
