@@ -62,7 +62,17 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">This page is still under construction.</h1>
+                <h1 class="page-header">Friends</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="panel panel-red ">
+                <div class="panel-heading">
+                    <h1>This page is still under construction.</h1>
+                </div>
+                <div class="panel-body">
+                    <p>Please check back later for updates.</p>
+                </div>
             </div>
         </div>
     </div>

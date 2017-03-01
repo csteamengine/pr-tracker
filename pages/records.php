@@ -59,15 +59,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <?php
     include "navigation.php";
 
-    $eventSQL = "SELECT * FROM userEvents userev 
-     INNER JOIN events eve
-     ON userev.eventID = eve.eventID
-     INNER JOIN category cat 
-     ON eve.categoryID = cat.categoryID
-     WHERE userev.userID = 
-     ".$_SESSION['user_id'];
 
-    $eventQuery = mysqli_query($conn, $eventSQL);
 
 
     ?>
@@ -76,78 +68,17 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             <div class="col-lg-12">
                 <h1 class="page-header">Personal Records</h1>
             </div>
-            <?php
-            if(mysqli_num_rows($eventQuery) > 0){
-                ?>
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Kitchen Sink
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Username</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.table-responsive -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <?php
-            }else{
-                ?>
-                <div class="col-lg-4 col-lg-offset-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading text-center">
-                            You haven't participated in any events yet
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <a href="addInfo.php?action=addEntry" style="text-decoration: none;">
-                                <button type="button" class="btn btn-outline btn-primary btn-lg btn-block">Create an Entry</button>
-                            </a>
-                            <!-- /.table-responsive -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
 
-                <?php
-            }
-            ?>
-            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            <div class="panel panel-red ">
+                <div class="panel-heading">
+                    <h1>This page is still under construction.</h1>
+                </div>
+                <div class="panel-body">
+                    <p>Please check back later for updates.</p>
+                </div>
+            </div>
         </div>
     </div>
     <!-- /#page-wrapper -->
