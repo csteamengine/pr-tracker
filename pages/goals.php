@@ -105,7 +105,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                             if(mysqli_num_rows($goalQuery) > 0){
 
                                 ?>
-                                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-Goals">
                                     <thead>
                                         <tr>
                                             <th>Activity</th>
@@ -208,7 +208,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 <script src="../dist/js/sb-admin-2.js"></script>
 <script>
 $(document).ready(function() {
-    $('#dataTables-example').DataTable({
+    $('#dataTables-Goals').DataTable({
         responsive: true
     });
 });
