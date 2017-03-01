@@ -139,7 +139,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                                 </td>
                                             </tr>
                                             <?php
-                                            if($count == 5){
+                                            $count++;
+                                            if($count == 6){
                                                 $count =1;
                                             }
                                         }
