@@ -46,7 +46,7 @@ switch($action){
         $time = str_pad(get_value('hours'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('minutes'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('seconds'),2,"0",STR_PAD_LEFT);
         $date = get_value('date')." 00:00:00";
 
-        $addEntrySQL = "UPDATE userGoals SET userID='".mysqli_real_escape_string($conn,$_SESSION['user_id'])."', categoryID='".mysqli_real_escape_string($conn,get_value('category'))."', eventID='".mysqli_real_escape_string($conn,get_value('activity'))."', unitID='".mysqli_real_escape_string($conn,get_value('units'))."', quantity='".mysqli_real_escape_string($conn,get_value('quantity'))."', reps='".mysqli_real_escape_string($conn,get_value('reps'))."', sets='".mysqli_real_escape_string($conn,get_value('sets'))."', time='".mysqli_real_escape_string($conn,$time)."', goalDeadline='".mysqli_real_escape_string($conn,$date)."', goalDescription='".mysqli_real_escape_string($conn, get_value('description'))."' WHERE userGoalID = ".mysqli_real_escape_string($conn,get_value('userGoalID'));
+        $addEntrySQL = "UPDATE userGoals SET userID='".mysqli_real_escape_string($conn,$_SESSION['user_id'])."', categoryID='".mysqli_real_escape_string($conn,get_value('category'))."', eventID='".mysqli_real_escape_string($conn,get_value('activity'))."', unitID='".mysqli_real_escape_string($conn,get_value('units'))."', quantity='".mysqli_real_escape_string($conn,get_value('quantity'))."', reps='".mysqli_real_escape_string($conn,get_value('reps'))."', sets='".mysqli_real_escape_string($conn,get_value('sets'))."', time='".mysqli_real_escape_string($conn,$time)."', goalDeadline='".mysqli_real_escape_string($conn,$date)."', goalDescription='".mysqli_real_escape_string($conn, get_value('description'))."', measureID='".mysqli_real_escape_string($conn, get_value('measure'))."' WHERE userGoalID = ".mysqli_real_escape_string($conn,get_value('userGoalID'));
         $addEntryQuery = mysqli_query($conn, $addEntrySQL);
 
         if(mysqli_error($conn) != ""){
@@ -511,6 +511,26 @@ switch($action){
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="form-group" id="groupMeasurement" >
+                                            <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
+                                                <label>Goal Measurement</label>
+                                                <a href="#" data-toggle="popover" title="Goal Measurement" data-placement="right" data-content="This will be used to track how close you are to your goal. E.g. Total Quantity would be a goal to run 500 miles before a certain date."><i class="fa fa-info-circle"></i></a>
+                                                <select name="measure" class="form-control" required>
+                                                    <option value=""></option>
+                                                    <?php
+                                                    $measure = "SELECT * FROM measure WHERE isActive =1";
+                                                    $measureQ = mysqli_query($conn, $measure);
+                                                    while($measureR = mysqli_fetch_assoc($measureQ)) {
+                                                        ?>
+                                                        <option value="<?= $measureR['measureID'] ?>" <?= $measureR['measureID'] == $goalResult['measureID'] ? "selected" : "" ?>><?= $measureR['measureTitle'] ?></option>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="form-group" id="groupTime">
                                             <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
                                                 <label>Goal Date</label>
@@ -779,6 +799,7 @@ switch($action){
             });
         });
     });
+    $('[data-toggle="popover"]').popover();
 
 </script>
 
