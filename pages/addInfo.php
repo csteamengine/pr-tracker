@@ -357,7 +357,7 @@ switch($action){
                         <div class="form-group" id="groupUnits" hidden>
                             <div class=" col-xs-4 col-xs-offset-0 col-md-2 col-md-offset-3 col-lg-2 col-lg-offset-3">
                                 <label>Quantity</label>
-                                <input type="number" step="any" class="form-control" name="quantity" id="quantity" placeholder="Quantity">
+                                <input type="number" step="any" min="0" class="form-control" name="quantity" id="quantity" placeholder="Quantity">
                             </div>
                             <div class=" col-xs-4 col-md-2 col-lg-2">
                                 <label>Units</label>
