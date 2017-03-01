@@ -132,7 +132,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                                             </div>
                                                         </div>
                                                 </td>
-                                                <td>
+                                                <td class="text-center">
                                                     <a href="/pages/editInfo.php?action=editGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-pencil" title="Edit Goal"></i></a>
                                                     <a href="/pages/editInfo.php?action=deleteGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-trash" title="Delete Goal"></i></a>
                                                 </td>
