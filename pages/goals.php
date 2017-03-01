@@ -118,6 +118,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                     </thead>
                                     <tbody>
                                         <?php
+                                        $count = 1;
                                         while($goalResult = mysqli_fetch_assoc($goalQuery)) {
                                             ?>
                                             <tr>
@@ -127,8 +128,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                                 <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
                                                 <td>
                                                         <div class="progress">
-                                                            <div class="progress-bar progress-bar-info" style="width: 80%">
-                                                                Example: 80%
+                                                            <div class="progress-bar progress-bar-info" style="width: <?= $count*20."%" ?>">
+                                                                Example: <?= $count*20."%" ?>
                                                             </div>
                                                         </div>
                                                 </td>
@@ -138,6 +139,9 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                                 </td>
                                             </tr>
                                             <?php
+                                            if($count == 5){
+                                                $count =1;
+                                            }
                                         }
                                         ?>
                                     </tbody>
