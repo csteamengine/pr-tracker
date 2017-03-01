@@ -58,7 +58,17 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 <div id="wrapper">
     <?php
     include "navigation.php";
+    ?>
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">This page is still under construction.</h1>
+            </div>
+        </div>
+    </div>
 
+    <?php
+    exit;
     $friendSQL = "SELECT * FROM friends WHERE friendOneID = 
      ".$_SESSION['user_id']." OR friendTwoID = ".$_SESSION['user_id']." AND isActive =1";
 

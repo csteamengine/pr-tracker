@@ -59,7 +59,17 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 <div id="wrapper">
     <?php
     include "navigation.php";
+    ?>
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">This page is still under construction.</h1>
+            </div>
+        </div>
+    </div>
 
+    <?php
+    exit;
     $eventSQL = "SELECT * FROM messages WHERE toUserID = 
      ".$_SESSION['user_id']." OR fromUserID = ".$_SESSION['user_id'];
 
