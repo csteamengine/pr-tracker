@@ -44,6 +44,12 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!-- DataTables CSS -->
+    <link href="../vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="../vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -69,7 +75,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             <!-- /.col-lg-12 -->
         </div>
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h5 class="pull-left">Recent Entries</h5>
@@ -96,56 +102,54 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                         if(mysqli_num_rows($eventQuery) > 0){
 
                             ?>
-                            <div class="table-responsive">
-                                <table class="table table-striped table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Activity</th>
-                                        <th>Quantity</th>
-                                        <th>Reps</th>
-                                        <th>Sets</th>
-                                        <th>Time</th>
-                                        <th>Date</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php
-                                    $count = 0;
-                                    while($count < 5 && $result = mysqli_fetch_assoc($eventQuery)) {
-
-                                        ?>
-                                        <tr>
-                                            <td><?= $result['eventTitle'] ?></td>
-                                            <td><?= $result['quantity'] ?> <?= $result['unitTitle'] ?></td>
-                                            <td><?= $result['reps'] ?></td>
-                                            <td><?= $result['sets'] ?></td>
-                                            <td><?= $result['time'] ?></td>
-                                            <td><?= explode(" ",$result['dateOfEvent'])[0] ?></td>
-                                            <td>
-                                                <a href="/pages/editInfo.php?action=editEntry&id=<?= $result['userEventID'] ?>"><i class="fa fa-pencil" title="Edit Entry"></i></a>
-                                                <a href="/pages/editInfo.php?action=deleteEntry&id=<?= $result['userEventID'] ?>"><i class="fa fa-trash" title="Delete Entry"></i></a>
-                                            </td>
-                                        </tr>
-                                        <?php
-                                        $count++;
-                                    }
-                                    ?>
-
-                                    </tbody>
-                                </table>
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-Entries">
+                                <thead>
+                                <tr>
+                                    <th>Activity</th>
+                                    <th>Quantity</th>
+                                    <th>Reps</th>
+                                    <th>Sets</th>
+                                    <th>Time</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
                                 <?php
-                                if($result = mysqli_fetch_assoc( $eventQuery)){
+                                $count = 0;
+                                while($count < 5 && $result = mysqli_fetch_assoc($eventQuery)) {
+
                                     ?>
-                                    <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-2 col-xs-offset-5">
-                                        <a href="/pages/activities.php">
-                                            <button type="button" class="btn btn-primary btn-outline">View All Entries</button>
-                                        </a>
-                                    </div>
+                                    <tr>
+                                        <td><?= $result['eventTitle'] ?></td>
+                                        <td><?= $result['quantity'] ?> <?= $result['unitTitle'] ?></td>
+                                        <td><?= $result['reps'] ?></td>
+                                        <td><?= $result['sets'] ?></td>
+                                        <td><?= $result['time'] ?></td>
+                                        <td><?= explode(" ",$result['dateOfEvent'])[0] ?></td>
+                                        <td>
+                                            <a href="/pages/editInfo.php?action=editEntry&id=<?= $result['userEventID'] ?>"><i class="fa fa-pencil" title="Edit Entry"></i></a>
+                                            <a href="/pages/editInfo.php?action=deleteEntry&id=<?= $result['userEventID'] ?>"><i class="fa fa-trash" title="Delete Entry"></i></a>
+                                        </td>
+                                    </tr>
                                     <?php
+                                    $count++;
                                 }
                                 ?>
-                            </div>
+
+                                </tbody>
+                            </table>
+                            <?php
+                            if($result = mysqli_fetch_assoc( $eventQuery)){
+                                ?>
+                                <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-2 col-xs-offset-5">
+                                    <a href="/pages/activities.php">
+                                        <button type="button" class="btn btn-primary btn-outline">View All Entries</button>
+                                    </a>
+                                </div>
+                                <?php
+                            }
+                            ?>
                         <?php
                         }else{
                             ?>
@@ -168,7 +172,9 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                     <!-- /.panel-body -->
                 </div>
             </div>
-            <div class="col-lg-6">
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h5 class="pull-left">Your Goals</h5>
@@ -192,55 +198,63 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                         if(mysqli_num_rows($goalQuery) > 0){
 
                             ?>
-                            <div class="table-responsive">
-                                <table class="table table-striped table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Activity</th>
-                                        <th>Quantity</th>
-                                        <th>Reps</th>
-                                        <th>Sets</th>
-                                        <th>Time</th>
-                                        <th>Deadline</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php
-                                    $count = 0;
-                                    while($count < 5 && $goalResult = mysqli_fetch_assoc($goalQuery)) {
-                                        ?>
-                                        <tr>
-                                            <td><?= $goalResult['eventTitle'] ?></td>
-                                            <td><?= $goalResult['quantity'] ?> <?= $goalResult['unitTitle'] ?></td>
-                                            <td><?= $goalResult['reps'] ?></td>
-                                            <td><?= $goalResult['sets'] ?></td>
-                                            <td><?= $goalResult['time'] ?></td>
-                                            <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
-                                            <td>
-                                                <a href="/pages/editInfo.php?action=editGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-pencil" title="Edit Goal"></i></a>
-                                                <a href="/pages/editInfo.php?action=deleteGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-trash" title="Delete Goal"></i></a>
-                                            </td>
-                                        </tr>
-                                        <?php
-                                        $count++;
-                                    }
-                                    ?>
-                                    </tbody>
-                                </table>
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-Goals">
+                                <thead>
+                                <tr>
+                                    <th>Activity</th>
+                                    <th>Quantity</th>
+                                    <th>Reps</th>
+                                    <th>Sets</th>
+                                    <th>Time</th>
+                                    <th>Deadline</th>
+                                    <th>Progress</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
                                 <?php
-                                if($goalResult = mysqli_fetch_assoc( $goalQuery)){
+                                $count = 1;
+                                while($goalResult = mysqli_fetch_assoc($goalQuery)) {
                                     ?>
-                                    <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-2 col-xs-offset-5">
-                                        <a href="/pages/goals.php">
-                                            <button type="button" class="btn btn-primary btn-outline">View All Goals</button>
-                                        </a>
-                                    </div>
+                                    <tr>
+                                        <td><?= $goalResult['eventTitle'] ?></td>
+                                        <td><?= $goalResult['quantity'] ?> <?= $goalResult['unitTitle'] ?></td>
+                                        <td><?= $goalResult['reps'] ?></td>
+                                        <td><?= $goalResult['sets'] ?></td>
+                                        <td><?= $goalResult['time'] ?></td>
+                                        <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
+                                        <td>
+                                            <div class="progress progress-striped">
+                                                <div class="progress-bar progress-bar-<?= ($count*20)."%" == '100%' ? "success" : "info" ?>" style="width: <?= ($count*20)."%" ?>">
+                                                    <?= ($count*20)."%" == '100%' ? "Completed" : ($count*20)."%" ?>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="/pages/editInfo.php?action=editGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-pencil" title="Edit Goal"></i></a>
+                                            <a href="/pages/editInfo.php?action=deleteGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-trash" title="Delete Goal"></i></a>
+                                        </td>
+                                    </tr>
                                     <?php
+                                    $count++;
+                                    if($count == 6){
+                                        $count =1;
+                                    }
                                 }
                                 ?>
-                            </div>
+                                </tbody>
+                            </table>
                             <?php
+                            if($goalResult = mysqli_fetch_assoc( $goalQuery)){
+                                ?>
+                                <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-2 col-xs-offset-5">
+                                    <a href="/pages/goals.php">
+                                        <button type="button" class="btn btn-primary btn-outline">View All Goals</button>
+                                    </a>
+                                </div>
+                                <?php
+                            }
+
                         }else{
                             ?>
                             <div class="panel-heading text-center">
@@ -260,119 +274,15 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                 </div>
             </div>
         </div>
-            <?php
-            if(mysqli_num_rows($eventQuery) > 0){
-                ?>
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
-                                <div class="pull-right">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                            Actions
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu pull-right" role="menu">
-                                            <li><a href="#">Action</a>
-                                            </li>
-                                            <li><a href="#">Another action</a>
-                                            </li>
-                                            <li><a href="#">Something else here</a>
-                                            </li>
-                                            <li class="divider"></li>
-                                            <li><a href="#">Separated link</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <div id="morris-area-chart"></div>
-                            </div>
-                            <!-- /.panel-body -->
-                        </div>
 
-                    </div>
-                    <!-- /.col-lg-8 -->
-                    <div class="col-lg-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <i class="fa fa-bell fa-fw"></i> Notifications Panel
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <div class="list-group">
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-comment fa-fw"></i> New Comment
-                                        <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                                    </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                        <span class="pull-right text-muted small"><em>12 minutes ago</em>
-                                    </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                        <span class="pull-right text-muted small"><em>27 minutes ago</em>
-                                    </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-tasks fa-fw"></i> New Task
-                                        <span class="pull-right text-muted small"><em>43 minutes ago</em>
-                                    </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                        <span class="pull-right text-muted small"><em>11:32 AM</em>
-                                    </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-bolt fa-fw"></i> Server Crashed!
-                                        <span class="pull-right text-muted small"><em>11:13 AM</em>
-                                    </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-warning fa-fw"></i> Server Not Responding
-                                        <span class="pull-right text-muted small"><em>10:57 AM</em>
-                                    </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed
-                                        <span class="pull-right text-muted small"><em>9:49 AM</em>
-                                    </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <i class="fa fa-money fa-fw"></i> Payment Received
-                                        <span class="pull-right text-muted small"><em>Yesterday</em>
-                                    </span>
-                                    </a>
-                                </div>
-                                <!-- /.list-group -->
-                                <a href="#" class="btn btn-default btn-block">View All Alerts</a>
-                            </div>
-                            <!-- /.panel-body -->
-                        </div>
-
-                    </div>
-                    <!-- /.row -->
-                </div>
-            <?php
-            }else {
-                ?>
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading text-center">
-                        More content soon to come!
-                    </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    More content soon to come!
                 </div>
             </div>
-                <?php
-            }
-            ?>
+        </div>
+
     <!-- /#page-wrapper -->
 
 </div>
@@ -395,6 +305,23 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 <!-- Custom Theme JavaScript -->
 <script src="../dist/js/sb-admin-2.js"></script>
 
+<!-- DataTables JavaScript -->
+<script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+<script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#dataTables-Goals').DataTable({
+            responsive: true
+        });
+    });
+    $(document).ready(function() {
+        $('#dataTables-Entries').DataTable({
+            responsive: true
+        });
+    });
+</script>
 </body>
 
 </html>

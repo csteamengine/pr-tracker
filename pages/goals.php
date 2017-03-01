@@ -81,7 +81,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             <?php
             if(mysqli_num_rows($eventQuery) > 0){
                 ?>
-                <div class="col-lg-8 col-lg-offset-2 col-md-offset-2 col-md-8 col-xs-10 col-xs-offset-1">
+                <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h5 class="pull-left">Your Goals</h5>
@@ -127,11 +127,11 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                                 <td><?= $goalResult['time'] ?></td>
                                                 <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
                                                 <td>
-                                                        <div class="progress progress-striped">
-                                                            <div class="progress-bar progress-bar-<?= ($count*20)."%" == '100%' ? "success" : "info" ?>" style="width: <?= ($count*20)."%" ?>">
-                                                                <?= ($count*20)."%" == '100%' ? "Completed" : ($count*20)."%" ?>
-                                                            </div>
+                                                    <div class="progress progress-striped">
+                                                        <div class="progress-bar progress-bar-<?= ($count*20)."%" == '100%' ? "success" : "info" ?>" style="width: <?= ($count*20)."%" ?>">
+                                                            <?= ($count*20)."%" == '100%' ? "Completed" : ($count*20)."%" ?>
                                                         </div>
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <a href="/pages/editInfo.php?action=editGoal&id=<?= $goalResult['userGoalID'] ?>"><i class="fa fa-pencil" title="Edit Goal"></i></a>
