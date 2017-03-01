@@ -21,7 +21,7 @@ switch($action){
         $time = get_value('hours').":".get_value('minutes').":".get_value('seconds');
         $date = get_value('date')." ".get_value('time');
 
-        $addEntrySQL = "UPDATE userEvents SET userID='".mysqli_real_escape_string($conn,$_SESSION['user_id'])."', categoryID='".mysqli_real_escape_string($conn,get_value('category'))."', eventID='".mysqli_real_escape_string($conn,get_value('activity'))."', unitID='".mysqli_real_escape_string($conn,get_value('units'))."', quantity='".mysqli_real_escape_string($conn,get_value('quantity'))."', sets='".mysqli_real_escape_string($conn,get_value('sets'))."', time='".mysqli_real_escape_string($conn,$time)."', dateOfEvent='".mysqli_real_escape_string($conn,$date)."' WHERE userEventID = ".mysqli_real_escape_string($conn,get_value('userEventID'));
+        $addEntrySQL = "UPDATE userEvents SET userID='".mysqli_real_escape_string($conn,$_SESSION['user_id'])."', categoryID='".mysqli_real_escape_string($conn,get_value('category'))."', eventID='".mysqli_real_escape_string($conn,get_value('activity'))."', unitID='".mysqli_real_escape_string($conn,get_value('units'))."', quantity='".mysqli_real_escape_string($conn,get_value('quantity'))."', sets='".mysqli_real_escape_string($conn,get_value('sets'))."', time='".mysqli_real_escape_string($conn,$time)."', dateOfEvent='".mysqli_real_escape_string($conn,$date)."', measureID='".mysqli_real_escape_string($conn, get_value('measure'))."' WHERE userEventID = ".mysqli_real_escape_string($conn,get_value('userEventID'));
         $addEntryQuery = mysqli_query($conn, $addEntrySQL);
 
         if(mysqli_error($conn) != ""){
@@ -378,6 +378,27 @@ switch($action){
                                             <div class="col-lg-2 col-md-2 col-xs-4">
                                                 <label for="seconds">Seconds</label>
                                                 <input type="number" step="any" name="seconds" min="0" class="form-control" id="seconds" value="<?= explode(":", $eventResult['time'])[2] == 00 ? "0" : ltrim(explode(":", $eventResult['time'])[2], '0') ?>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group" id="groupMeasurement" >
+                                            <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
+                                                <label>Measurement</label>
+                                                <a href="#" data-toggle="popover" title="Goal Measurement" data-placement="right" data-content="This will be used to track how close you are to your goal. E.g. Total Quantity would be a goal to run 500 miles before a certain date."><i class="fa fa-info-circle"></i></a>
+                                                <select name="measure" class="form-control" required>
+                                                    <option value=""></option>
+                                                    <?php
+                                                    $measure = "SELECT * FROM measure WHERE isActive =1";
+                                                    $measureQ = mysqli_query($conn, $measure);
+                                                    while($measureR = mysqli_fetch_assoc($measureQ)) {
+
+                                                        ?>
+                                                        <option value="<?= $measureR['measureID'] ?>" <?= $eventResult['measureID'] == $measureR['measureID'] ? "selected" : "" ?>><?= $measureR['measureTitle'] ?></option>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>

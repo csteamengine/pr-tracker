@@ -34,7 +34,7 @@ switch($action){
         $date = get_value('date')." ".get_value('time');
 
 
-        $addEntrySQL = "INSERT INTO userEvents (userID, categoryID, eventID, unitID, quantity, reps, sets, time, dateOfEvent) VALUES ('".mysqli_real_escape_string($conn,$_SESSION['user_id'])."','".mysqli_real_escape_string($conn,get_value('category'))."','".mysqli_real_escape_string($conn,get_value('activity'))."','".mysqli_real_escape_string($conn,get_value('units'))."','".mysqli_real_escape_string($conn,get_value('quantity'))."','".mysqli_real_escape_string($conn,get_value('reps'))."','".mysqli_real_escape_string($conn,get_value('sets'))."','".mysqli_real_escape_string($conn,$time)."','".mysqli_real_escape_string($conn,$date)."')";
+        $addEntrySQL = "INSERT INTO userEvents (userID, categoryID, eventID, unitID, quantity, reps, sets, time, dateOfEvent, measureID) VALUES ('".mysqli_real_escape_string($conn,$_SESSION['user_id'])."','".mysqli_real_escape_string($conn,get_value('category'))."','".mysqli_real_escape_string($conn,get_value('activity'))."','".mysqli_real_escape_string($conn,get_value('units'))."','".mysqli_real_escape_string($conn,get_value('quantity'))."','".mysqli_real_escape_string($conn,get_value('reps'))."','".mysqli_real_escape_string($conn,get_value('sets'))."','".mysqli_real_escape_string($conn,$time)."','".mysqli_real_escape_string($conn,$date)."', '".mysqli_real_escape_string($conn,get_value('measure'))."')";
         $addEntryQuery = mysqli_query($conn, $addEntrySQL);
 
         if(mysqli_error($conn) != ""){
@@ -403,6 +403,26 @@ switch($action){
                         </div>
                     </div>
                     <div class="row">
+                        <div class="form-group" id="groupMeasurement" hidden>
+                            <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
+                                <label>Measurement</label>
+                                <a href="#" data-toggle="popover" title="Goal Measurement" data-placement="right" data-content="This will be used to track how close you are to your goal. E.g. Total Quantity would be a goal to run 500 miles before a certain date."><i class="fa fa-info-circle"></i></a>
+                                <select name="measure" class="form-control" required>
+                                    <option value=""></option>
+                                    <?php
+                                    $measure = "SELECT * FROM measure WHERE isActive =1";
+                                    $measureQ = mysqli_query($conn, $measure);
+                                    while($measureR = mysqli_fetch_assoc($measureQ)) {
+                                        ?>
+                                        <option value="<?= $measureR['measureID'] ?>"><?= $measureR['measureTitle'] ?></option>
+                                        <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group" id="groupTime" hidden>
                             <div class="col-lg-3 col-lg-offset-3 col-md-3 col-md-offset-3 col-xs-6 col-xs-offset-0">
                                 <label>Date</label>
@@ -679,17 +699,20 @@ switch($action){
             });
             $('#activity').change(function(){
                 if($('#activity').val() == ""){
+                    $('#groupMeasurement').hide();
                     $('#groupUnits').hide();
                     $('#timeRow').hide();
                     $('#groupTime').hide();
                     $('#submitGroup').hide();
                 }else{
+                    $('#groupMeasurement').show();
                     $('#groupTime').show();
                     $('#timeRow').show();
                     $('#groupUnits').show();
                     $('#submitGroup').show();
                 }
             })
+            $('[data-toggle="popover"]').popover();
         </script>
         <?php
         break;
