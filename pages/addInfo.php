@@ -535,7 +535,7 @@ switch($action){
                         <div class="form-group" id="groupDescription" hidden>
                             <div class=" col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
                                 <label>Description</label>
-                                <textarea style="resize: none" placeholder="Enter Activity Description" title="Description" class="form-control" name="description"></textarea>
+                                <textarea style="resize: none" placeholder="Enter Goal Description" title="Description" class="form-control" name="description"></textarea>
                             </div>
                         </div>
                     </div>
