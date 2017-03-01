@@ -44,6 +44,12 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!-- DataTables CSS -->
+    <link href="../vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="../vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -99,9 +105,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                             if(mysqli_num_rows($goalQuery) > 0){
 
                                 ?>
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-hover">
-                                        <thead>
+                                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
                                         <tr>
                                             <th>Activity</th>
                                             <th>Quantity</th>
@@ -109,8 +114,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                             <th>Deadline</th>
                                             <th>Action</th>
                                         </tr>
-                                        </thead>
-                                        <tbody>
+                                    </thead>
+                                    <tbody>
                                         <?php
                                         while($goalResult = mysqli_fetch_assoc($goalQuery)) {
                                             ?>
@@ -127,10 +132,9 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                             <?php
                                         }
                                         ?>
-
-                                        </tbody>
-                                    </table>
-                                </div>
+                                    </tbody>
+                                </table>
+                                
                                 <?php
                             }else{
                                 ?>
@@ -195,9 +199,20 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
 <script src="../vendor/morrisjs/morris.min.js"></script>
 <script src="../data/morris-data.js"></script>
 
+<!-- DataTables JavaScript -->
+<script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+<script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
+
 <!-- Custom Theme JavaScript -->
 <script src="../dist/js/sb-admin-2.js"></script>
-
+<script>
+$(document).ready(function() {
+    $('#dataTables-example').DataTable({
+        responsive: true
+    });
+});
+</script>
 </body>
 
 </html>
