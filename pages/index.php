@@ -127,7 +127,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                         <td><?= $result['sets'] ?></td>
                                         <td><?= $result['time'] ?></td>
                                         <td><?= explode(" ",$result['dateOfEvent'])[0] ?></td>
-                                        <td>
+                                        <td class="text-center">
                                             <a href="/pages/editInfo.php?action=editEntry&id=<?= $result['userEventID'] ?>"><i class="fa fa-pencil" title="Edit Entry"></i></a>
                                             <a href="/pages/editInfo.php?action=deleteEntry&id=<?= $result['userEventID'] ?>"><i class="fa fa-trash" title="Delete Entry"></i></a>
                                         </td>
