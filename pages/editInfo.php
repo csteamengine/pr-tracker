@@ -20,8 +20,8 @@ switch($action){
     case 'insertEditEntry':
         $time = get_value('hours').":".get_value('minutes').":".get_value('seconds');
         $date = get_value('date')." ".get_value('time');
-
-        $addEntrySQL = "UPDATE userEvents SET userID='".mysqli_real_escape_string($conn,$_SESSION['user_id'])."', categoryID='".mysqli_real_escape_string($conn,get_value('category'))."', eventID='".mysqli_real_escape_string($conn,get_value('activity'))."', unitID='".mysqli_real_escape_string($conn,get_value('units'))."', quantity='".mysqli_real_escape_string($conn,get_value('quantity'))."', sets='".mysqli_real_escape_string($conn,get_value('sets'))."', time='".mysqli_real_escape_string($conn,$time)."', dateOfEvent='".mysqli_real_escape_string($conn,$date)."', measureID='".mysqli_real_escape_string($conn, get_value('measure'))."' WHERE userEventID = ".mysqli_real_escape_string($conn,get_value('userEventID'));
+        $rating = getRating(get_value('measure'), get_value('quantity'),$time, get_value('reps'), get_value('sets'));
+        $addEntrySQL = "UPDATE userEvents SET userID='".mysqli_real_escape_string($conn,$_SESSION['user_id'])."', categoryID='".mysqli_real_escape_string($conn,get_value('category'))."', eventID='".mysqli_real_escape_string($conn,get_value('activity'))."', unitID='".mysqli_real_escape_string($conn,get_value('units'))."', quantity='".mysqli_real_escape_string($conn,get_value('quantity'))."', sets='".mysqli_real_escape_string($conn,get_value('sets'))."', time='".mysqli_real_escape_string($conn,$time)."', dateOfEvent='".mysqli_real_escape_string($conn,$date)."', measureID='".mysqli_real_escape_string($conn, get_value('measure'))."', rating='".mysqli_real_escape_string($conn, $rating)."' WHERE userEventID = ".mysqli_real_escape_string($conn,get_value('userEventID'));
         $addEntryQuery = mysqli_query($conn, $addEntrySQL);
 
         if(mysqli_error($conn) != ""){
@@ -45,8 +45,8 @@ switch($action){
     case 'insertEditGoal':
         $time = str_pad(get_value('hours'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('minutes'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('seconds'),2,"0",STR_PAD_LEFT);
         $date = get_value('date')." 00:00:00";
-
-        $addEntrySQL = "UPDATE userGoals SET userID='".mysqli_real_escape_string($conn,$_SESSION['user_id'])."', categoryID='".mysqli_real_escape_string($conn,get_value('category'))."', eventID='".mysqli_real_escape_string($conn,get_value('activity'))."', unitID='".mysqli_real_escape_string($conn,get_value('units'))."', quantity='".mysqli_real_escape_string($conn,get_value('quantity'))."', reps='".mysqli_real_escape_string($conn,get_value('reps'))."', sets='".mysqli_real_escape_string($conn,get_value('sets'))."', time='".mysqli_real_escape_string($conn,$time)."', goalDeadline='".mysqli_real_escape_string($conn,$date)."', goalDescription='".mysqli_real_escape_string($conn, get_value('description'))."', measureID='".mysqli_real_escape_string($conn, get_value('measure'))."' WHERE userGoalID = ".mysqli_real_escape_string($conn,get_value('userGoalID'));
+        $rating = getRating(get_value('measure'), get_value('quantity'),$time, get_value('reps'), get_value('sets'));
+        $addEntrySQL = "UPDATE userGoals SET userID='".mysqli_real_escape_string($conn,$_SESSION['user_id'])."', categoryID='".mysqli_real_escape_string($conn,get_value('category'))."', eventID='".mysqli_real_escape_string($conn,get_value('activity'))."', unitID='".mysqli_real_escape_string($conn,get_value('units'))."', quantity='".mysqli_real_escape_string($conn,get_value('quantity'))."', reps='".mysqli_real_escape_string($conn,get_value('reps'))."', sets='".mysqli_real_escape_string($conn,get_value('sets'))."', time='".mysqli_real_escape_string($conn,$time)."', goalDeadline='".mysqli_real_escape_string($conn,$date)."', goalDescription='".mysqli_real_escape_string($conn, get_value('description'))."', measureID='".mysqli_real_escape_string($conn, get_value('measure'))."', rating='".mysqli_real_escape_string($conn, $rating)."' WHERE userGoalID = ".mysqli_real_escape_string($conn,get_value('userGoalID'));
         $addEntryQuery = mysqli_query($conn, $addEntrySQL);
 
         if(mysqli_error($conn) != ""){
@@ -274,7 +274,7 @@ switch($action){
                                 break;
                             case "editEntry":
 
-                                $eventSQL = "SELECT * FROM userEvents userev 
+                                $eventSQL = "SELECT *, userev.measureID as myMeasureID FROM userEvents userev 
                                              INNER JOIN events eve
                                              ON userev.eventID = eve.eventID
                                              INNER JOIN category cat 
@@ -283,7 +283,6 @@ switch($action){
                                              ON userev.unitID = unit.unitID
                                              WHERE userev.userID = 
                                              ".$_SESSION['user_id']." AND userEventID = ".get_value('id');
-
                                 $eventQuery = mysqli_query($conn, $eventSQL);
                                 if(mysqli_num_rows($eventQuery) == 0){
                                     header("location: /pages/index.php");
@@ -385,7 +384,7 @@ switch($action){
                                         <div class="form-group" id="groupMeasurement" >
                                             <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
                                                 <label>Measurement</label>
-                                                <a href="#" data-toggle="popover" title="Goal Measurement" data-placement="right" data-content="This will be used to track how close you are to your goal. E.g. Total Quantity would be a goal to run 500 miles before a certain date."><i class="fa fa-info-circle"></i></a>
+                                                <a href="#" data-toggle="popover" title="Measurement" data-placement="right" data-content="This will be used to track how close you are to your goal. E.g. Total Quantity would be a goal to run 500 miles before a certain date."><i class="fa fa-info-circle"></i></a>
                                                 <select name="measure" class="form-control" required>
                                                     <option value=""></option>
                                                     <?php
@@ -394,7 +393,7 @@ switch($action){
                                                     while($measureR = mysqli_fetch_assoc($measureQ)) {
 
                                                         ?>
-                                                        <option value="<?= $measureR['measureID'] ?>" <?= $eventResult['measureID'] == $measureR['measureID'] ? "selected" : "" ?>><?= $measureR['measureTitle'] ?></option>
+                                                        <option value="<?= $measureR['measureID'] ?>" <?= $eventResult['myMeasureID'] == $measureR['measureID'] ? "selected" : "" ?>><?= $measureR['measureTitle'] ?></option>
                                                         <?php
                                                     }
                                                     ?>
@@ -829,3 +828,48 @@ switch($action){
 
 </html>
 
+<?php
+function getRating($measureID, $quantity, $time, $reps, $sets)
+{
+    $time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $time);
+
+    sscanf($time, "%d:%d:%d", $hours, $minutes, $seconds);
+
+    $time = $hours * 3600 + $minutes * 60 + $seconds;
+
+    switch ($measureID) {
+        case '1':
+            
+            return $quantity/$time;
+            break;
+        case '2':
+            return $reps;
+            break;
+        case '3':
+            return $quantity;
+            break;
+        case '4':
+            return $sets;
+            break;
+        case '5':
+            
+            return $time;
+            break;
+        case '6':
+            
+            return $reps/$time;
+            break;
+        case '7':
+            return $quantity;
+            break;
+        case '8':
+            return $sets;
+            break;
+        case '9':
+            return $reps;
+            break;
+        default:
+            # code...
+            break;
+    }
+}

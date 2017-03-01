@@ -32,9 +32,8 @@ switch($action){
     case 'insertEntry':
         $time = str_pad(get_value('hours'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('minutes'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('seconds'),2,"0",STR_PAD_LEFT);
         $date = get_value('date')." ".get_value('time');
-
-
-        $addEntrySQL = "INSERT INTO userEvents (userID, categoryID, eventID, unitID, quantity, reps, sets, time, dateOfEvent, measureID) VALUES ('".mysqli_real_escape_string($conn,$_SESSION['user_id'])."','".mysqli_real_escape_string($conn,get_value('category'))."','".mysqli_real_escape_string($conn,get_value('activity'))."','".mysqli_real_escape_string($conn,get_value('units'))."','".mysqli_real_escape_string($conn,get_value('quantity'))."','".mysqli_real_escape_string($conn,get_value('reps'))."','".mysqli_real_escape_string($conn,get_value('sets'))."','".mysqli_real_escape_string($conn,$time)."','".mysqli_real_escape_string($conn,$date)."', '".mysqli_real_escape_string($conn,get_value('measure'))."')";
+        $rating = getRating(get_value('measure'), get_value('quantity'),$time, get_value('reps'), get_value('sets'));
+        $addEntrySQL = "INSERT INTO userEvents (userID, categoryID, eventID, unitID, quantity, reps, sets, time, dateOfEvent, measureID, rating) VALUES ('".mysqli_real_escape_string($conn,$_SESSION['user_id'])."','".mysqli_real_escape_string($conn,get_value('category'))."','".mysqli_real_escape_string($conn,get_value('activity'))."','".mysqli_real_escape_string($conn,get_value('units'))."','".mysqli_real_escape_string($conn,get_value('quantity'))."','".mysqli_real_escape_string($conn,get_value('reps'))."','".mysqli_real_escape_string($conn,get_value('sets'))."','".mysqli_real_escape_string($conn,$time)."','".mysqli_real_escape_string($conn,$date)."', '".mysqli_real_escape_string($conn,get_value('measure'))."', '".mysqli_real_escape_string($conn,$rating)."')";
         $addEntryQuery = mysqli_query($conn, $addEntrySQL);
 
         if(mysqli_error($conn) != ""){
@@ -60,9 +59,9 @@ switch($action){
     case 'insertGoal':
         $time = str_pad(get_value('hours'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('minutes'),2,"0",STR_PAD_LEFT).":".str_pad(get_value('seconds'),2,"0",STR_PAD_LEFT);
         $date = get_value('date')." 00:00:00";
+        $rating = getRating(get_value('measure'), get_value('quantity'),$time, get_value('reps'), get_value('sets'));
 
-
-        $addEntrySQL = "INSERT INTO userGoals (userID, categoryID, eventID, unitID, quantity, reps, sets, time, goalDeadline, goalDescription, measureID) VALUES ('".mysqli_real_escape_string($conn,$_SESSION['user_id'])."','".mysqli_real_escape_string($conn,get_value('category'))."','".mysqli_real_escape_string($conn,get_value('activity'))."','".mysqli_real_escape_string($conn,get_value('units'))."','".mysqli_real_escape_string($conn,get_value('quantity'))."','".mysqli_real_escape_string($conn,get_value('reps'))."','".mysqli_real_escape_string($conn,get_value('sets'))."','".mysqli_real_escape_string($conn,$time)."','".mysqli_real_escape_string($conn,$date)."', '".mysqli_real_escape_string($conn,get_value('description'))."', '".mysqli_real_escape_string($conn,get_value('measure'))."')";
+        $addEntrySQL = "INSERT INTO userGoals (userID, categoryID, eventID, unitID, quantity, reps, sets, time, goalDeadline, goalDescription, measureID, rating) VALUES ('".mysqli_real_escape_string($conn,$_SESSION['user_id'])."','".mysqli_real_escape_string($conn,get_value('category'))."','".mysqli_real_escape_string($conn,get_value('activity'))."','".mysqli_real_escape_string($conn,get_value('units'))."','".mysqli_real_escape_string($conn,get_value('quantity'))."','".mysqli_real_escape_string($conn,get_value('reps'))."','".mysqli_real_escape_string($conn,get_value('sets'))."','".mysqli_real_escape_string($conn,$time)."','".mysqli_real_escape_string($conn,$date)."', '".mysqli_real_escape_string($conn,get_value('description'))."', '".mysqli_real_escape_string($conn,get_value('measure'))."', '".mysqli_real_escape_string($conn,$rating)."')";
         $addEntryQuery = mysqli_query($conn, $addEntrySQL);
 
         if(mysqli_error($conn) != ""){
@@ -793,3 +792,48 @@ switch($action){
 
 </html>
 
+<?php
+function getRating($measureID, $quantity, $time, $reps, $sets)
+{
+    $time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $time);
+
+    sscanf($time, "%d:%d:%d", $hours, $minutes, $seconds);
+
+    $time = $hours * 3600 + $minutes * 60 + $seconds;
+
+    switch ($measureID) {
+        case '1':
+            
+            return $quantity/$time;
+            break;
+        case '2':
+            return $reps;
+            break;
+        case '3':
+            return $quantity;
+            break;
+        case '4':
+            return $sets;
+            break;
+        case '5':
+            
+            return $time;
+            break;
+        case '6':
+            
+            return $reps/$time;
+            break;
+        case '7':
+            return $quantity;
+            break;
+        case '8':
+            return $sets;
+            break;
+        case '9':
+            return $reps;
+            break;
+        default:
+            # code...
+            break;
+    }
+}
