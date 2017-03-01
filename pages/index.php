@@ -79,6 +79,12 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h5 class="pull-left">Recent Entries</h5>
+                        <div class="pull-right" style="margin-left: 10px">
+                            <a href="/pages/activities.php">
+                                <button type="button" class="btn btn-primary btn-outline">View All Entries</button>
+                            </a>
+                        </div>
+
                         <a href="addInfo.php?action=addEntry"><button class="btn btn-outline btn-primary  pull-right" title="Create a new Entry"><i class="fa fa-plus"></i></button></a>
                         <div class="clearfix"></div>
                     </div>
@@ -136,20 +142,9 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                     $count++;
                                 }
                                 ?>
-
                                 </tbody>
                             </table>
-                            <?php
-                            if($result = mysqli_fetch_assoc( $eventQuery)){
-                                ?>
-                                <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-2 col-xs-offset-5">
-                                    <a href="/pages/activities.php">
-                                        <button type="button" class="btn btn-primary btn-outline">View All Entries</button>
-                                    </a>
-                                </div>
-                                <?php
-                            }
-                            ?>
+
                         <?php
                         }else{
                             ?>
@@ -178,6 +173,11 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h5 class="pull-left">Your Goals</h5>
+                        <div class="pull-right" style="margin-left: 10px">
+                            <a href="/pages/activities.php">
+                                <button type="button" class="btn btn-primary btn-outline">View All Goals</button>
+                            </a>
+                        </div>
                         <a href="addInfo.php?action=addGoal"><button class="btn btn-outline btn-primary pull-right" title="Create a new Goal"><i class="fa fa-plus"></i></button></a>
                         <div class="clearfix"></div>
                     </div>
@@ -244,17 +244,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                 ?>
                                 </tbody>
                             </table>
-                            <?php
-                            if($goalResult = mysqli_fetch_assoc( $goalQuery)){
-                                ?>
-                                <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-xs-2 col-xs-offset-5">
-                                    <a href="/pages/goals.php">
-                                        <button type="button" class="btn btn-primary btn-outline">View All Goals</button>
-                                    </a>
-                                </div>
-                                <?php
-                            }
-
+                        <?php
                         }else{
                             ?>
                             <div class="panel-heading text-center">
