@@ -56,7 +56,6 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script src="/includes/bootcomplete.js-master/dist/jquery.bootcomplete.js"></script>
 
 
 </head>
@@ -73,6 +72,184 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                 <h1 class="page-header">Dashboard</h1>
             </div>
             <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            <?php
+                $nextGoal = "SELECT * FROM userGoals WHERE isActive = 1 AND userID = ".$_SESSION['user_id']." AND goalDeadline >= CURDATE() ORDER BY goalDeadline ASC";
+                $nextGoalQuery = mysqli_query($conn, $nextGoal);
+                if(mysqli_num_rows($nextGoalQuery) == 0){
+                ?>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-crosshairs fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">0</div>
+                                        <div>No goals yet.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="addInfo.php?action=addGoal">
+                                <div class="panel-footer">
+                                    <span class="pull-left">Create one now!</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <?php
+                }else{
+                    $nextGoalResult = mysqli_fetch_assoc($nextGoalQuery);
+                    $date1=date_create($nextGoalResult['goalDeadline']);
+                    $date2=date_create('now');
+                    $diff=date_diff($date2,$date1);
+
+            ?>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-crosshairs fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge"><?= $diff->format("%a") ?></div>
+                                        <div>Day<?= $diff->format("%a") > 1 ? "s" : ""  ?> until next goal</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+            <?php
+
+                }
+            $completedGoals = "SELECT COUNT(userID) as totalComplete  FROM userGoals WHERE isActive = 1 AND completed=1 AND userID = ".$_SESSION['user_id'];
+            $completedQuery = mysqli_query($conn, $completedGoals);
+            $completedResult = mysqli_fetch_assoc($completedQuery);
+
+            ?>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-check-square-o fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"><?= $completedResult['totalComplete'] ?></div>
+                                <div>Goals completed</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/pages/goals.php">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <?php
+
+            $nextGoal = "SELECT * FROM userEvents WHERE isActive = 1 AND userID = ".$_SESSION['user_id']." ORDER BY dateOfEvent DESC";
+            $nextGoalQuery = mysqli_query($conn, $nextGoal);
+            if(mysqli_num_rows($nextGoalQuery) == 0){
+                ?>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-bar-chart fa-4x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">0</div>
+                                    <div>No entries yet.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="addInfo.php?action=addActivity">
+                            <div class="panel-footer">
+                                <span class="pull-left">Create one now!</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <?php
+            }else{
+                $nextGoalResult = mysqli_fetch_assoc($nextGoalQuery);
+                $date1=date_create($nextGoalResult['dateOfEvent']);
+                $date2=date_create('now');
+                $diff=date_diff($date1,$date2);
+
+                ?>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-calendar-check-o fa-4x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge"><?= $diff->format("%a") ?></div>
+                                    <div>Day<?= $diff->format("%a") > 1 ? "s" : ""  ?> since last entry</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <?php
+
+            }
+            $totalEvents = "SELECT  COUNT(DISTINCT eventID) as totalCount FROM userEvents WHERE isActive = 1 AND userID = ".$_SESSION['user_id'];
+            $totalQuery = mysqli_query($conn, $totalEvents);
+            $totalResult = mysqli_fetch_assoc($totalQuery);
+
+            ?>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-red">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-bar-chart fa-4x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"><?= $totalResult['totalCount'] ?></div>
+                                <div>Different activities</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
         </div>
         <div class="row">
             <div class="col-lg-12">
