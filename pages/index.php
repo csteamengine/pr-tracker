@@ -97,7 +97,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                      INNER JOIN units unit
                      ON userev.unitID = unit.unitID
                      WHERE userev.userID = 
-                     ".$_SESSION['user_id']." ORDER BY userev.dateCreated DESC";
+                     ".$_SESSION['user_id']." and userev.isActive=1 ORDER BY userev.dateOfEvent DESC";
 
                     $eventQuery = mysqli_query($conn, $eventSQL);
 
@@ -306,7 +306,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             responsive: true,
             'paging': false,
             'searching': false,
-            'info': false
+            'info': false,
+            "order": [[ 5, "asc" ]]
         });
     });
     $(document).ready(function() {
@@ -314,7 +315,8 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             responsive: true,
             'paging': false,
             'searching': false,
-            'info': false
+            'info': false,
+            "order": [[ 5, "desc" ]]
         });
     });
 </script>
