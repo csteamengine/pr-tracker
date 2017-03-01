@@ -127,7 +127,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                                 <td><?= $goalResult['time'] ?></td>
                                                 <td><?= explode(" ",$goalResult['goalDeadline'])[0] ?></td>
                                                 <td>
-                                                        <div class="progress">
+                                                        <div class="progress progress-striped">
                                                             <div class="progress-bar progress-bar-<?= ($count*20)."%" == '100%' ? "success" : "info" ?>" style="width: <?= ($count*20)."%" ?>">
                                                                 <?= ($count*20)."%" == '100%' ? "Completed" : ($count*20)."%" ?>
                                                             </div>
