@@ -129,7 +129,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                                 <td>
                                                         <div class="progress">
                                                             <div class="progress-bar progress-bar-info" style="width: <?= ($count*20)."%" ?>">
-                                                                Example: <?= ($count*20)."%" ?>
+                                                                <?= ($count*20)."%" == '100%' ? "Completed" : ($count*20)."%" ?>
                                                             </div>
                                                         </div>
                                                 </td>
