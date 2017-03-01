@@ -128,7 +128,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                                 <td>
                                                         <div class="progress">
                                                             <div class="progress-bar progress-bar-info" style="width: 80%">
-                                                                Low Disk Space: 80% full
+                                                                Example: 80%
                                                             </div>
                                                         </div>
                                                 </td>
