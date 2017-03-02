@@ -1,7 +1,0 @@
-{  
-   "username":"stonestreet",
-   "password":"Stee1nhagen2016",
-   "host":"mysql.stonestreetsoftware.com",
-   "database":"pr_tracker",
-   "port":3306
-}
