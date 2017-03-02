@@ -354,7 +354,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                     <div class="panel-heading">
                         <h5 class="pull-left">Your Goals</h5>
                         <div class="pull-right" style="margin-left: 10px">
-                            <a href="/pages/activities.php">
+                            <a href="/pages/goals.php">
                                 <button type="button" class="btn btn-primary btn-outline">View All Goals</button>
                             </a>
                         </div>
