@@ -17,10 +17,20 @@ use Facebook\GraphObject;
 use Facebook\Entities\AccessToken;
 use Facebook\HttpClients\FacebookCurlHttpClient;
 use Facebook\HttpClients\FacebookHttpable;
+
+$localhost = array('127.0.0.1', 'localhost:8282', '::1');
+
+
+
 // init app with app id and secret
 FacebookSession::setDefaultApplication( '1846305968942250','fbff692b575f1c665b4956df66a1891b' );
 // login helper with redirect_uri
+if(in_array($_SERVER['REMOTE_ADDR'], $localhost)){
+    $helper = new FacebookRedirectLoginHelper('http://localhost:8282/includes/facebook/fbconfig.php' );
+}else{
     $helper = new FacebookRedirectLoginHelper('http://prtracker.stonestreetsoftware.com/includes/facebook/fbconfig.php' );
+
+}
 try {
   $session = $helper->getSessionFromRedirect();
 } catch( FacebookRequestException $ex ) {

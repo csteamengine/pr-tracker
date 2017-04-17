@@ -183,9 +183,15 @@ class FacebookRedirectLoginHelper
         '/oauth/access_token',
         $params
       ))->execute()->getResponse();
-      if (isset($response['access_token'])) {
-        return new FacebookSession($response['access_token']);
-      }
+        $accessToken = null;
+        if (is_object($response) && isset($response->access_token)) {
+            $accessToken = $response->access_token;
+        } elseif (is_array($response) && isset($response['access_token'])) {
+            $accessToken = $response['access_token'];
+        }
+        if (isset($accessToken)) {
+            return new FacebookSession($accessToken);
+        }
     }
     return null;
   }
