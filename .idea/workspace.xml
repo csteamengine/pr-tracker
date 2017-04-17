@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="60c08b1a-1ba9-423a-9fd1-eb277e6e4d8e" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.htaccess" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/facebook/fbconfig.php" afterPath="$PROJECT_DIR$/includes/facebook/fbconfig.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/facebook/src/Facebook/FacebookRedirectLoginHelper.php" afterPath="$PROJECT_DIR$/includes/facebook/src/Facebook/FacebookRedirectLoginHelper.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/php/base.php" afterPath="$PROJECT_DIR$/includes/php/base.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -20,29 +18,6 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/index.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7425">
-              <caret line="500" column="25" lean-forward="false" selection-start-line="500" selection-start-column="25" selection-end-line="501" selection-end-column="36" />
-              <folding>
-                <marker date="1488419397000" expanded="true" signature="2295:2350" ph="SELECT * FRO... userGoals" />
-                <marker date="1488419397000" expanded="true" signature="2295:2351" ph="SELECT * FRO... userGoals" />
-                <marker date="1488419397000" expanded="true" signature="2295:2431" ph="SELECT * FRO... userGoals" />
-                <marker date="1488419397000" expanded="true" signature="5454:5556" ph="SELECT *, CO... userGoals" />
-                <marker date="1488419397000" expanded="true" signature="5454:5578" ph="SELECT * FRO... userGoals" />
-                <marker date="1488419397000" expanded="true" signature="6857:6964" ph="SELECT * FRO... userEvents" />
-                <marker date="1488419397000" expanded="true" signature="9817:9911" ph="SELECT COUNT... userEvents" />
-                <marker date="1488419397000" expanded="true" signature="9817:9932" ph="SELECT COUNT... userEvents" />
-                <marker date="1488419397000" expanded="true" signature="12012:12514" ph="SELECT * FRO... userEvents" />
-                <marker date="1488419397000" expanded="true" signature="12012:12522" ph="SELECT *, us... userEvents" />
-                <marker date="1488419397000" expanded="true" signature="17131:17479" ph="SELECT * FRO... userGoals" />
-                <marker date="1488419397000" expanded="true" signature="17131:17487" ph="SELECT * FRO... userGoals" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="general.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/includes/php/general.php">
           <provider selected="true" editor-type-id="text-editor">
@@ -64,40 +39,6 @@
               <caret line="51" column="34" lean-forward="false" selection-start-line="51" selection-start-column="34" selection-end-line="51" selection-end-column="34" />
               <folding>
                 <marker date="1488474067000" expanded="true" signature="3052:3529" ph="SELECT * FRO... userEvents" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="editInfo.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/editInfo.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3840">
-              <caret line="608" column="101" lean-forward="false" selection-start-line="608" selection-start-column="101" selection-end-line="608" selection-end-column="101" />
-              <folding>
-                <element signature="e#9835#13758#0#PHP" expanded="false" />
-                <element signature="e#13787#26226#0#PHP" expanded="false" />
-                <element signature="e#26255#38382#0#PHP" expanded="false" />
-                <marker date="1488410528000" expanded="true" signature="638:1327" ph="UPDATE userE... " />
-                <marker date="1488410528000" expanded="true" signature="1679:2019" ph="UPDATE event... " />
-                <marker date="1488410528000" expanded="true" signature="2723:3556" ph="UPDATE userG... " />
-                <marker date="1488410528000" expanded="true" signature="3934:4042" ph="DELETE FROM " />
-                <marker date="1488410528000" expanded="true" signature="4253:4353" ph="DELETE FROM " />
-                <marker date="1488410528000" expanded="true" signature="4560:4666" ph="DELETE FROM " />
-                <marker date="1488410528000" expanded="true" signature="10553:10599" ph="SELECT categ... category" />
-                <marker date="1488410528000" expanded="true" signature="13851:14510" ph="SELECT *, us... userEvents" />
-                <marker date="1488410528000" expanded="true" signature="15565:15611" ph="SELECT categ... category" />
-                <marker date="1488410528000" expanded="true" signature="17453:17509" ph="SELECT event... events" />
-                <marker date="1488410528000" expanded="true" signature="19428:19447" ph="SELECT * FRO... units" />
-                <marker date="1488410528000" expanded="true" signature="23595:23634" ph="SELECT * FRO... measure" />
-                <marker date="1488410528000" expanded="true" signature="26312:26354" ph="SELECT * FRO... userGoals" />
-                <marker date="1488410528000" expanded="true" signature="27385:27431" ph="SELECT categ... category" />
-                <marker date="1488410528000" expanded="true" signature="29273:29329" ph="SELECT event... events" />
-                <marker date="1488410528000" expanded="true" signature="31967:31986" ph="SELECT * FRO... units" />
-                <marker date="1488410528000" expanded="true" signature="36111:36150" ph="SELECT * FRO... measure" />
-                <marker date="1488410528000" expanded="true" signature="39897:40475" ph="SELECT * FRO... userGoals" />
-                <marker date="1488410528000" expanded="true" signature="44859:45645" ph="SELECT * FRO... userEvents" />
-                <marker date="1488410528000" expanded="true" signature="50068:50535" ph="SELECT * FRO... userGoals" />
               </folding>
             </state>
           </provider>
@@ -143,7 +84,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="base.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="base.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/includes/php/base.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="30">
@@ -151,6 +92,26 @@
               <folding>
                 <element signature="e#6#88#0#PHP" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bower.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bower.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="16" column="32" lean-forward="true" selection-start-line="16" selection-start-column="32" selection-end-line="16" selection-end-column="32" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -242,6 +203,7 @@
         <option value="$PROJECT_DIR$/includes/facebook/src/Facebook/FacebookRedirectLoginHelper.php" />
         <option value="$PROJECT_DIR$/includes/facebook/fbconfig.php" />
         <option value="$PROJECT_DIR$/includes/php/base.php" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -400,6 +362,7 @@
     <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="FullScreen" value="true" />
+    <property name="add_unversioned_files" value="$PROJECT_DIR$/.gitignore" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -510,12 +473,12 @@
       <workItem from="1488743367940" duration="1672000" />
       <workItem from="1491830471096" duration="24000" />
       <workItem from="1492468999809" duration="9000" />
-      <workItem from="1492469049876" duration="1005000" />
+      <workItem from="1492469049876" duration="1404000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35675000" />
+    <option name="totallyTimeSpent" value="36074000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
@@ -525,8 +488,8 @@
       <window_info id="Tool Output" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32739726" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32739726" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15751211" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -556,37 +519,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pages/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1185">
-          <caret line="79" column="64" lean-forward="false" selection-start-line="79" selection-start-column="64" selection-end-line="79" selection-end-column="64" />
-          <folding>
-            <marker date="1488419397000" expanded="true" signature="2295:2350" ph="SELECT * FRO... userGoals" />
-            <marker date="1488419397000" expanded="true" signature="2295:2351" ph="SELECT * FRO... userGoals" />
-            <marker date="1488419397000" expanded="true" signature="2295:2431" ph="SELECT * FRO... userGoals" />
-            <marker date="1488419397000" expanded="true" signature="5454:5556" ph="SELECT *, CO... userGoals" />
-            <marker date="1488419397000" expanded="true" signature="5454:5578" ph="SELECT * FRO... userGoals" />
-            <marker date="1488419397000" expanded="true" signature="6857:6964" ph="SELECT * FRO... userEvents" />
-            <marker date="1488419397000" expanded="true" signature="9817:9911" ph="SELECT COUNT... userEvents" />
-            <marker date="1488419397000" expanded="true" signature="9817:9932" ph="SELECT COUNT... userEvents" />
-            <marker date="1488419397000" expanded="true" signature="12012:12514" ph="SELECT * FRO... userEvents" />
-            <marker date="1488419397000" expanded="true" signature="12012:12522" ph="SELECT *, us... userEvents" />
-            <marker date="1488419397000" expanded="true" signature="17131:17479" ph="SELECT * FRO... userGoals" />
-            <marker date="1488419397000" expanded="true" signature="17131:17487" ph="SELECT * FRO... userGoals" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/old_pages/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6015">
-          <caret line="401" column="16" lean-forward="false" selection-start-line="401" selection-start-column="16" selection-end-line="422" selection-end-column="22" />
-          <folding>
-            <marker date="1487462306000" expanded="true" signature="235:254" ph="SELECT * FRO... users" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pages/activities.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1890">
@@ -1280,6 +1212,22 @@
           <folding>
             <element signature="e#6#88#0#PHP" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="32" lean-forward="true" selection-start-line="16" selection-start-column="32" selection-end-line="16" selection-end-column="32" />
+          <folding />
         </state>
       </provider>
     </entry>
