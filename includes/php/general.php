@@ -176,3 +176,11 @@ function getGoalAverage($result){
     }
     return $average;
 }
+
+function updateGoals(){
+    $sql  = "SELECT * FROM userGoals WHERE userID = ".$_SESSION['user_id'];
+    $query = mysqli_query($conn, $sql);
+    while($result = mysqli_fetch_assoc($query)){
+        echo $result['rating'];
+    }
+}
