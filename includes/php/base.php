@@ -7,7 +7,9 @@
  */
 //error_reporting(E_ERROR);
 
-session_start();
+echo "Hello!";
+exit;
+//session_start();
 
 
 $parent = basename(dirname($_SERVER['PHP_SELF']));
