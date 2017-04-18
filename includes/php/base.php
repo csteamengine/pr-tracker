@@ -5,7 +5,7 @@
  * Date: 9/19/16
  * Time: 2:19 PM
  */
-error_reporting(E_ERROR);
+//error_reporting(E_ERROR);
 
 session_start();
 
