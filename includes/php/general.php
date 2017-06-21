@@ -151,7 +151,6 @@ function getAverage($result){
             $seconds = str_pad(round(60 * $seconds, 0), 2, "0", STR_PAD_LEFT);
             $minutes = explode(".", $minutes)[0];
             $average = $minutes.":".$seconds." per Lap";
-            break;
         }
     }else{
         $average = "N/A";
