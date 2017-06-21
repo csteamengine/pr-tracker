@@ -124,7 +124,16 @@ function first_login($username,$conn){
 function getAverage($result){
     if($result['theMeasure'] == 1 || $result['theMeasure'] == 6){
         switch($result['unitID']){
-            case '2' || '6':
+            case '2':
+                $time = explode(":", $result['time']);
+                $minutes = (60*$time[0]) + $time[1]*1.0 + ($time[2]/60);
+                $minutes = ($minutes/($result['quantity']/100));
+                $seconds = ".".substr(explode(".", $minutes)[1], 0, 2);
+                $seconds = str_pad(round(60 * $seconds, 0), 2, "0", STR_PAD_LEFT);
+                $minutes = explode(".", $minutes)[0];
+                $average = $minutes.":".$seconds." per 100 ".$result['unitTitle'];
+                break;
+            case '6':
                 $time = explode(":", $result['time']);
                 $minutes = (60*$time[0]) + $time[1]*1.0 + ($time[2]/60);
                 $minutes = ($minutes/($result['quantity']/100));
@@ -143,7 +152,7 @@ function getAverage($result){
                 $average = $minutes.":".$seconds." per ".$result['singular'];
                 break;
         }
-        if($result['eventID'] == '8'){
+        if($result['evID'] == '8'){
             $time = explode(":", $result['time']);
             $minutes = (60*$time[0]) + $time[1]*1.0 + ($time[2]/60);
             $minutes = ($minutes/($result['quantity']/50));
