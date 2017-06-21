@@ -107,14 +107,14 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             <?php
 
             $eventSQL = "SELECT *, userev.measureID as theMeasure FROM userEvents userev 
-                         INNER JOIN events eve
-                         ON userev.eventID = eve.eventID
-                         INNER JOIN category cat 
-                         ON eve.categoryID = cat.categoryID
-                         INNER JOIN units un 
-                         ON userev.unitID = un.unitID
-                         WHERE userev.userID = 
-                         ".$_SESSION['user_id']." ORDER BY userev.dateCreated DESC";
+                     INNER JOIN events eve
+                     ON userev.eventID = eve.eventID
+                     INNER JOIN category cat 
+                     ON eve.categoryID = cat.categoryID
+                     INNER JOIN units unit
+                     ON userev.unitID = unit.unitID
+                     WHERE userev.userID = 
+                     ".$_SESSION['user_id']." and userev.isActive=1 ORDER BY userev.dateOfEvent DESC";
 
             $eventQuery = mysqli_query($conn, $eventSQL);
             if(mysqli_num_rows($eventQuery) > 0){
