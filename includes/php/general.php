@@ -143,7 +143,7 @@ function getAverage($result){
                 $average = $minutes.":".$seconds." per ".$result['singular'];
                 break;
         }
-        if($result['evID'] == '8'){
+        if($result['eventID'] == '8'){
             $time = explode(":", $result['time']);
             $minutes = (60*$time[0]) + $time[1]*1.0 + ($time[2]/60);
             $minutes = ($minutes/($result['quantity']/50));
