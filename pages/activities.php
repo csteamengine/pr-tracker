@@ -137,6 +137,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                 <th>Reps</th>
                                 <th>Sets</th>
                                 <th>Time</th>
+                                <th>Average</th>
                                 <th>Date</th>
                                 <th>Action</th>
                             </tr>
@@ -152,6 +153,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
                                     <td><?= $newResult['reps'] ?></td>
                                     <td><?= $newResult['sets'] ?></td>
                                     <td><?= $newResult['time'] ?></td>
+                                    <td><?= getAverage($newResult) ?></td>
                                     <td><?= explode(" ",$newResult['dateOfEvent'])[0] ?></td>
                                     <td class="text-center">
                                         <a href="/pages/editInfo.php?action=editEntry&id=<?= $newResult['userEventID'] ?>"><i class="fa fa-pencil" title="Edit Entry"></i></a>
