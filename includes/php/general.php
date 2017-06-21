@@ -133,6 +133,18 @@ function getAverage($result){
                 $minutes = explode(".", $minutes)[0];
                 $average = $minutes.":".$seconds." per 100 ".$result['unitTitle'];
                 break;
+            case '8':
+                $time = explode(":", $result['time']);
+                $minutes = (60*$time[0]) + $time[1]*1.0 + ($time[2]/60);
+                $minutes = (($result['quantity']/50)/$minutes);
+                if($minutes < 1){
+                    $minutes = $minutes * 60;
+                }
+                $seconds = ".".substr(explode(".", $minutes)[1], 0, 2);
+                $seconds = str_pad(round(60 * $seconds, 0), 2, "0", STR_PAD_LEFT);
+                $minutes = explode(".", $minutes)[0];
+                $average = $minutes.":".$seconds." per 100 ".$result['unitTitle'];
+                break;
             default:
                 $time = explode(":", $result['time']);
                 $minutes = (60*$time[0]) + $time[1]*1.0 + ($time[2]/60);
