@@ -106,7 +106,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             </div>
             <?php
 
-            $eventSQL = "SELECT * FROM userEvents userev 
+            $eventSQL = "SELECT *, userev.measureID as theMeasure FROM userEvents userev 
                          INNER JOIN events eve
                          ON userev.eventID = eve.eventID
                          INNER JOIN category cat 
