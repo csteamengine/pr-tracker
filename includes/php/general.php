@@ -143,9 +143,20 @@ function getAverage($result){
                 $average = $minutes.":".$seconds." per ".$result['singular'];
                 break;
         }
+        if($result['eventID'] == '8'){
+            $time = explode(":", $result['time']);
+            $minutes = (60*$time[0]) + $time[1]*1.0 + ($time[2]/60);
+            $minutes = ($minutes/($result['quantity']/50));
+            $seconds = ".".substr(explode(".", $minutes)[1], 0, 2);
+            $seconds = str_pad(round(60 * $seconds, 0), 2, "0", STR_PAD_LEFT);
+            $minutes = explode(".", $minutes)[0];
+            $average = $minutes.":".$seconds." per Lap";
+            break;
+        }
     }else{
         $average = "N/A";
     }
+
     return $average;
 }
 
