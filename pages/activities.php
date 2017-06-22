@@ -106,7 +106,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
             </div>
             <?php
 
-            $eventSQL = "SELECT *, userev.measureID as theMeasure, userev.eventID as evID FROM userEvents userev 
+            $eventSQL = "SELECT *, userev.measureID as theMeasure FROM userEvents userev 
                      INNER JOIN events eve
                      ON userev.eventID = eve.eventID
                      INNER JOIN category cat 
@@ -237,7 +237,7 @@ if(!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == false){
     $(document).ready(function() {
         $('#dataTables-Entries').DataTable({
             responsive: true,
-            "order": [[ 5, "desc" ]]
+            "order": [[ 6, "desc" ]]
 
         });
     });
